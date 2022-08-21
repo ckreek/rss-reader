@@ -29,7 +29,10 @@ public class RssController : ControllerBase
   {
     var newItems = GetItems();
     await SaveNewItems(newItems);
-    var items = await _context.RssItems.AsNoTracking().Where(x => !x.Hidden).ToListAsync();
+    var items = await _context.RssItems.AsNoTracking()
+        .Where(x => !x.Hidden)
+        .OrderBy(x => x.PublishDate)
+        .ToListAsync();
     return items.Select(_mapper.Map<RssItemDto>);
   }
 

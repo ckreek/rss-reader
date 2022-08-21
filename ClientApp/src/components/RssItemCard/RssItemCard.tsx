@@ -5,12 +5,14 @@ import { RssItem } from "store/RssItem/RssItemStore";
 import { useEffect, useRef } from "react";
 import { Box, Button, CardActions } from "@mui/material";
 import { formatDate } from "utils";
+import { useRootStore } from "store/RootStore";
 
 interface RssItemCardProps {
   item: RssItem;
 }
 
 export const RssItemCard = ({ item }: RssItemCardProps) => {
+  const { rssItemStore } = useRootStore();
   const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
@@ -18,6 +20,10 @@ export const RssItemCard = ({ item }: RssItemCardProps) => {
       ref.current.innerHTML = item.summary;
     }
   }, [item.summary]);
+
+  const handleHideClick = async () => {
+    await rssItemStore.hide(item);
+  }
 
   return (
     <Card sx={{ width: "100%" }}>
@@ -33,7 +39,7 @@ export const RssItemCard = ({ item }: RssItemCardProps) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Hide</Button>
+        <Button size="small" onClick={handleHideClick}>Hide</Button>
       </CardActions>
     </Card>
   );
