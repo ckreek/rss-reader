@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box, Container, List, ListItem } from "@mui/material";
+import { RssItemCard } from "./components";
+import { observer } from "mobx-react-lite";
+import { useRootStore } from "store/RootStore";
+import { useEffect } from "react";
 
-function App() {
+const RssList = observer(() => {
+  const { rssItemStore } = useRootStore();
+  const { items } = rssItemStore;
+
+  useEffect(() => {
+    rssItemStore.load();
+  }, [rssItemStore]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <List sx={{ overflowY: "auto" }}>
+      {items.map((x) => (
+        <ListItem key={x.id}>
+          <RssItemCard item={x} />
+        </ListItem>
+      ))}
+    </List>
   );
-}
+});
+
+const App = () => {
+  useEffect(() => {
+    console.log("1");
+  }, []);
+
+  return (
+    <Container
+      sx={{
+        backgroundColor: "rgb(207, 232, 252)",
+        display: "flex",
+      }}
+    >
+      <Box height="50px"></Box>
+      <RssList />
+    </Container>
+  );
+};
 
 export default App;
