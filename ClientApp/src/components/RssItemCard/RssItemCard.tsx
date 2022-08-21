@@ -3,6 +3,8 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { RssItem } from "store/RssItem/RssItemStore";
 import { useEffect, useRef } from "react";
+import { Box } from "@mui/material";
+import { formatDate } from "utils";
 
 interface RssItemCardProps {
   item: RssItem;
@@ -20,9 +22,12 @@ export const RssItemCard = ({ item }: RssItemCardProps) => {
   return (
     <Card sx={{ width: "100%" }}>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {item.title.replace(" - Upwork", "")}
-        </Typography>
+        <Box display="flex" alignItems="center">
+          <Typography gutterBottom variant="h5" component="div">
+            {item.title.replace(" - Upwork", "")}
+          </Typography>
+          <Typography variant="subtitle2">{', '}{formatDate(item.publishDate)}</Typography>
+        </Box>
         <Typography ref={ref} variant="body2">
           {item.summary}
         </Typography>

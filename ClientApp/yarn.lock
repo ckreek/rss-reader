@@ -1620,6 +1620,13 @@
   resolved "https://registry.yarnpkg.com/@mui/core-downloads-tracker/-/core-downloads-tracker-5.10.1.tgz#6a04d559b51e78186486122d3de28d18517ddacb"
   integrity sha512-zyzLkVSqi+WuxG8UZrrOaWbhHkDK+MlHFjLpL+vqUVU6iSUaDYREu1xoLWEQsWOznT4oT2iEiGZLpQLgkn+WiA==
 
+"@mui/icons-material@^5.8.4":
+  version "5.8.4"
+  resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.8.4.tgz#3f2907c9f8f5ce4d754cb8fb4b68b5a1abf4d095"
+  integrity sha512-9Z/vyj2szvEhGWDvb+gG875bOGm8b8rlHBKOD1+nA3PcgC3fV6W1AU6pfOorPeBfH2X4mb9Boe97vHvaSndQvA==
+  dependencies:
+    "@babel/runtime" "^7.17.2"
+
 "@mui/material@^5.10.1":
   version "5.10.1"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.10.1.tgz#4a980c1fc34e2853d674dd0eff2723618402a4f4"
@@ -6149,6 +6156,11 @@ mobx@^6.6.1:
   version "6.6.1"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.6.1.tgz#70ee6aa82f25aeb7e7d522bd621207434e509318"
   integrity sha512-7su3UZv5JF+ohLr2opabjbUAERfXstMY+wiBtey8yNAPoB8H187RaQXuhFjNkH8aE4iHbDWnhDFZw0+5ic4nGQ==
+
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 ms@2.0.0:
   version "2.0.0"
