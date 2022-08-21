@@ -3,7 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { RssItem } from "store/RssItem/RssItemStore";
 import { useEffect, useRef } from "react";
-import { Box } from "@mui/material";
+import { Box, Button, CardActions } from "@mui/material";
 import { formatDate } from "utils";
 
 interface RssItemCardProps {
@@ -32,6 +32,9 @@ export const RssItemCard = ({ item }: RssItemCardProps) => {
           {item.summary}
         </Typography>
       </CardContent>
+      <CardActions>
+        <Button size="small">Hide</Button>
+      </CardActions>
     </Card>
   );
 };

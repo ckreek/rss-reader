@@ -1,7 +1,7 @@
 
 namespace upwork_rss.Dto;
 
-public class RssItem
+public class RssItemDto
 {
     public string Title { get; set; } = default!;
     public string Summary { get; set; } = default!;

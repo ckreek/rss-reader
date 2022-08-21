@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using upwork_rss.Configurations;
+using upwork_rss.Data;
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +20,15 @@ builder.Services.AddCors(options =>
                                                 .AllowAnyMethod();
                         });
 });
+
+
+var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+var dbName = builder.Configuration.GetConnectionString("DefaultConnection");
+var dbPath = System.IO.Path.Join(path, dbName);
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite($"Data Source={dbPath}"));
+
+builder.Services.ConfigureMapper();
 
 var app = builder.Build();
 
