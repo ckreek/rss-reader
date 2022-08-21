@@ -13,10 +13,12 @@ namespace upwork_rss.Migrations
                 name: "RssItems",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: false),
                     Summary = table.Column<string>(type: "TEXT", nullable: false),
-                    PublishDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
+                    Url = table.Column<string>(type: "TEXT", nullable: false),
+                    PublishDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Hidden = table.Column<bool>(type: "INTEGER", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -25,6 +27,11 @@ namespace upwork_rss.Migrations
                 {
                     table.PrimaryKey("PK_RssItems", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RssItems_Url",
+                table: "RssItems",
+                column: "Url");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

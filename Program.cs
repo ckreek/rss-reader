@@ -28,6 +28,7 @@ var dbPath = System.IO.Path.Join(path, dbName);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}"));
 
+builder.Services.ConfigureServices();
 builder.Services.ConfigureMapper();
 
 var app = builder.Build();

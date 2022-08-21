@@ -16,13 +16,15 @@ export class RssItemStore {
   };
 
   hide = async (item: RssItem) => {
-    await api.post(`/rss/${encodeURIComponent(item.id)}/hide`)
-    this.items = this.items.filter(x => x.id !== item.id);
-  }
+    await api.patch(`/rss/${encodeURIComponent(item.id)}/hide`);
+    runInAction(() => {
+      this.items = this.items.filter((x) => x.id !== item.id);
+    });
+  };
 }
 
 export interface RssItem {
-  id: string;
+  id: number;
   title: string;
   summary: string;
   url: string;

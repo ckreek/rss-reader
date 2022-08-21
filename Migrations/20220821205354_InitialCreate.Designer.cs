@@ -11,7 +11,7 @@ using upwork_rss.Data;
 namespace upwork_rss.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220821194137_InitialCreate")]
+    [Migration("20220821205354_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,8 +21,9 @@ namespace upwork_rss.Migrations
 
             modelBuilder.Entity("upwork_rss.Entities.RssItem", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("TEXT");
@@ -30,7 +31,7 @@ namespace upwork_rss.Migrations
                     b.Property<bool>("Hidden")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("PublishDate")
+                    b.Property<DateTime>("PublishDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Summary")
@@ -44,7 +45,13 @@ namespace upwork_rss.Migrations
                     b.Property<DateTime>("UpdatedOn")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Url");
 
                     b.ToTable("RssItems");
                 });
