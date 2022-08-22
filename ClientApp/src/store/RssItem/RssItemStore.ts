@@ -13,12 +13,14 @@ export class RssItemStore {
   itemsByFeedId: RssItemsByFeedId = {};
   pageByFeedId: NumberByFeedId = {};
   totalByFeedId: NumberByFeedId = {};
+  loading = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
   async load(feedId: number) {
+    this.loading = true;
     const page = this.getPageByFeedId(feedId) - 1;
     const result = await api.get<ListResult<RssItem>>(
       `/rss/${feedId}?page=${page}`
@@ -26,6 +28,7 @@ export class RssItemStore {
     runInAction(() => {
       this.itemsByFeedId[feedId] = result.list;
       this.totalByFeedId[feedId] = result.total;
+      this.loading = false;
     });
   }
 
