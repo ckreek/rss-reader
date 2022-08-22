@@ -39,14 +39,19 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
+            "label": "Publish: Web",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "publish",
                 "${workspaceFolder}/UpworkRss.Web/UpworkRss.Web.csproj",
                 "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "/consoleloggerparameters:NoSummary",
+                "-r",
+                "osx-x64",
+                "--no-self-contained",
+                "-c",
+                "Release"
             ],
             "problemMatcher": "$msCompile"
         },

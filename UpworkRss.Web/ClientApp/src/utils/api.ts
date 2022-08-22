@@ -1,4 +1,4 @@
-const baseUrl = "https://localhost:7024/api";
+const baseUrl = `${process.env.REACT_APP_API_URL}/api`;
 
 const parseResponse = async (response: Response) => {
   const contentType = response.headers.get("content-type");
