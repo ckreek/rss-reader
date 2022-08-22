@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using UpworkRss.BusinessLayer.Configurations;
 using UpworkRss.Web.Configurations;
-using UpwrokRss.BusinessLayer.Data;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -21,13 +21,7 @@ builder.Services.AddCors(options =>
                         });
 });
 
-
-var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-var dbName = builder.Configuration.GetConnectionString("DefaultConnection");
-var dbPath = System.IO.Path.Join(path, dbName);
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite($"Data Source={dbPath}"));
-
+builder.Services.ConfigureDb(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.ConfigureServices();
 builder.Services.ConfigureMapper();
 

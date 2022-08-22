@@ -22,4 +22,10 @@ public class FeedService : IFeedService
     public Task<List<Feed>> List() {
       return _context.Feeds.ToListAsync();
     }
+
+    public async Task<Feed?> Update(Feed feed) {
+      _context.Feeds.Update(feed);
+      await _context.SaveChangesAsync();
+      return feed;
+    }
 }

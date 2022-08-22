@@ -1,6 +1,8 @@
-﻿using UpwrokRss.BusinessLayer.Services;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using UpwrokRss.BusinessLayer.Services;
 
-namespace UpworkRss.Web.Configurations;
+namespace UpworkRss.BusinessLayer.Configurations;
 
 public static class ServiceConfigurator
 {

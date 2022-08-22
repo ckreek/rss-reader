@@ -13,21 +13,18 @@ public class RssController : ControllerBase
 {
     private readonly ILogger<RssController> _logger;
     private readonly IMapper _mapper;
-    private readonly UpworkRssClient _upworkRssClient;
     private readonly IRssItemService _rssItemService;
     private readonly IFeedService _feedService;
 
     public RssController(
       ILogger<RssController> logger,
       IMapper mapper,
-      UpworkRssClient upworkRssClient,
       IRssItemService rssItemService,
       IFeedService feedService
       )
     {
         _logger = logger;
         _mapper = mapper;
-        _upworkRssClient = upworkRssClient;
         _rssItemService = rssItemService;
         _feedService = feedService;
     }
@@ -40,11 +37,6 @@ public class RssController : ControllerBase
         {
             return NotFound();
         }
-
-        var newItems = _upworkRssClient.GetItems(feed.Url);
-        var mappedItems = newItems.Select(_mapper.Map<RssItem>);
-
-        await _rssItemService.SaveNewItems(feed.Id, mappedItems);
 
         var items = await _rssItemService.List(feed.Id, new Pagination(page));
         var total = await _rssItemService.Count(feed.Id);
