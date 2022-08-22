@@ -11,7 +11,16 @@ services.ConfigureDb("upwork-rss.db");
 services.ConfigureServices();
 services.ConfigureMapper();
 
-services.AddLogging(configure => configure.AddConsole());
+services.AddLogging(configure => configure
+    .AddSimpleConsole(options =>
+    {
+        options.IncludeScopes = true;
+        options.SingleLine = true;
+        options.TimestampFormat = "HH:mm:ss ";
+    })
+    .AddFilter("Microsoft", LogLevel.Warning)
+    .AddFilter("System", LogLevel.Warning)
+    .AddFilter("Read RSS", LogLevel.Trace));
 
 var serviceProvider = services.BuildServiceProvider();
 
@@ -23,5 +32,5 @@ while (true)
 
     await readRssJob.Execute();
 
-    await Task.Delay(1000 * 5);
+    await Task.Delay(1000 * 60 * 3);
 }

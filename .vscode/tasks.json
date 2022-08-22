@@ -2,14 +2,25 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build-Background",
+            "label": "Build: Background",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
                 "${workspaceFolder}/UpworkRss.Background/UpworkRss.Background.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Publish: Background",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/UpworkRss.Background/UpworkRss.Background.csproj",
+                "-r",
+                "osx-x64",
+                "--no-self-contained"
             ],
             "problemMatcher": "$msCompile"
         },
