@@ -3,7 +3,7 @@ import { api } from "utils";
 
 export class FeedStore {
   feeds: Feed[] = [];
-  selectedFeedId: number | undefined;
+  selectedFeed: Feed | undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -14,13 +14,13 @@ export class FeedStore {
     runInAction(() => {
       this.feeds = feeds;
       if (this.feeds.length > 0) {
-        this.selectedFeedId = this.feeds[0].id;
+        this.selectedFeed = this.feeds[0];
       }
     });
   }
 
-  select(feedId: number) {
-    this.selectedFeedId = feedId;
+  select(feed: Feed) {
+    this.selectedFeed = feed;
   }
 }
 

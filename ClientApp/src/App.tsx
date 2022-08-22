@@ -24,13 +24,15 @@ import { DrawerListItem } from "listItems";
 const RssList = observer(() => {
   const { rssItemStore, feedStore } = useRootStore();
 
-  const items = feedStore.selectedFeedId ? rssItemStore.getByFeedId(feedStore.selectedFeedId) : [];
+  const items = feedStore.selectedFeed
+    ? rssItemStore.getByFeedId(feedStore.selectedFeed.id)
+    : [];
 
   useEffect(() => {
-    if (feedStore.selectedFeedId) {
-      rssItemStore.load(feedStore.selectedFeedId);
+    if (feedStore.selectedFeed) {
+      rssItemStore.load(feedStore.selectedFeed.id);
     }
-  }, [rssItemStore, feedStore.selectedFeedId]);
+  }, [rssItemStore, feedStore.selectedFeed]);
 
   return (
     <List sx={{ overflowY: "auto" }}>
@@ -43,7 +45,7 @@ const RssList = observer(() => {
   );
 });
 
-const Header = () => {
+const Header2 = () => {
   const { rssItemStore } = useRootStore();
 
   const handleRefreshClick = () => {
@@ -127,6 +129,47 @@ const SavedSearches = observer(() => {
   );
 });
 
+interface HeaderProps {
+  open: boolean;
+  toggleDrawer: () => void;
+}
+
+const Header = observer(({ open, toggleDrawer }: HeaderProps) => {
+  const { feedStore } = useRootStore()
+
+  return (
+    <AppBar position="absolute" open={open}>
+      <Toolbar
+        sx={{
+          pr: "24px", // keep right padding when drawer closed
+        }}
+      >
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={toggleDrawer}
+          sx={{
+            marginRight: "36px",
+            ...(open && { display: "none" }),
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+          sx={{ flexGrow: 1 }}
+        >
+          Feed | {feedStore.selectedFeed?.name}
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
+});
+
 const App = () => {
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -136,35 +179,7 @@ const App = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="absolute" open={open}>
-        <Toolbar
-          sx={{
-            pr: "24px", // keep right padding when drawer closed
-          }}
-        >
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer}
-            sx={{
-              marginRight: "36px",
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          >
-            Dashboard
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Header open={open} toggleDrawer={toggleDrawer} />
 
       <Drawer variant="permanent" open={open}>
         <Toolbar

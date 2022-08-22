@@ -19,7 +19,7 @@ interface DrawerListItemProps {
 export const DrawerListItem = ({ feed }: DrawerListItemProps) => {
   const { feedStore } = useRootStore();
   const handleClick = () => {
-    feedStore.select(feed.id);
+    feedStore.select(feed);
   };
 
   return (
