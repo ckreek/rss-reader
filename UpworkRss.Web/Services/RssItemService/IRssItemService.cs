@@ -1,8 +1,8 @@
 
-using upwork_rss.Entities;
-using upwork_rss.Models;
+using UpworkRss.Web.Entities;
+using UpworkRss.Web.Models;
 
-namespace upwork_rss.Services;
+namespace UpworkRss.Web.Services;
 
 public interface IRssItemService
 {

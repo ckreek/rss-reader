@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace upwork_rss.Migrations
+namespace UpworkRss.Web.Migrations
 {
     public partial class AddedRead : Migration
     {

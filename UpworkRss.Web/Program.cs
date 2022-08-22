@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using upwork_rss.Configurations;
-using upwork_rss.Data;
+using UpworkRss.Web.Configurations;
+using UpworkRss.Web.Data;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

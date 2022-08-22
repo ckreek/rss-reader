@@ -3,11 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using upwork_rss.Data;
+using UpworkRss.Web.Data;
 
 #nullable disable
 
-namespace upwork_rss.Migrations
+namespace UpworkRss.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace upwork_rss.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
-            modelBuilder.Entity("upwork_rss.Entities.Feed", b =>
+            modelBuilder.Entity("UpworkRss.Web.Entities.Feed", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +42,7 @@ namespace upwork_rss.Migrations
                     b.ToTable("Feeds");
                 });
 
-            modelBuilder.Entity("upwork_rss.Entities.RssItem", b =>
+            modelBuilder.Entity("UpworkRss.Web.Entities.RssItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,9 +87,9 @@ namespace upwork_rss.Migrations
                     b.ToTable("RssItems");
                 });
 
-            modelBuilder.Entity("upwork_rss.Entities.RssItem", b =>
+            modelBuilder.Entity("UpworkRss.Web.Entities.RssItem", b =>
                 {
-                    b.HasOne("upwork_rss.Entities.Feed", "Feed")
+                    b.HasOne("UpworkRss.Web.Entities.Feed", "Feed")
                         .WithMany()
                         .HasForeignKey("FeedId")
                         .OnDelete(DeleteBehavior.Cascade)

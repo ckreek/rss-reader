@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using upwork_rss.Data;
+using UpworkRss.Web.Data;
 
 #nullable disable
 
-namespace upwork_rss.Migrations
+namespace UpworkRss.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20220821205354_InitialCreate")]
@@ -19,7 +19,7 @@ namespace upwork_rss.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
-            modelBuilder.Entity("upwork_rss.Entities.RssItem", b =>
+            modelBuilder.Entity("UpworkRss.Web.Entities.RssItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

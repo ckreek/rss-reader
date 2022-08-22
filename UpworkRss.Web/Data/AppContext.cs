@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using upwork_rss.Entities;
+using UpworkRss.Web.Entities;
 
-namespace upwork_rss.Data;
+namespace UpworkRss.Web.Data;
 
 public class AppDbContext : DbContext
 {

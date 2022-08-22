@@ -1,6 +1,6 @@
-﻿using upwork_rss.Services;
+﻿using UpworkRss.Web.Services;
 
-namespace upwork_rss.Configurations;
+namespace UpworkRss.Web.Configurations;
 
 public static class ServiceConfigurator
 {

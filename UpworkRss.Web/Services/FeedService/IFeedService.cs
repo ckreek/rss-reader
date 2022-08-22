@@ -1,7 +1,7 @@
 
-using upwork_rss.Entities;
+using UpworkRss.Web.Entities;
 
-namespace upwork_rss.Services;
+namespace UpworkRss.Web.Services;
 
 public interface IFeedService
 {

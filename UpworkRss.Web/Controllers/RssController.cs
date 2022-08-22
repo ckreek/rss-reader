@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using upwork_rss.Dto;
-using upwork_rss.Entities;
-using upwork_rss.Models;
-using upwork_rss.Services;
+using UpworkRss.Web.Dto;
+using UpworkRss.Web.Entities;
+using UpworkRss.Web.Models;
+using UpworkRss.Web.Services;
 
-namespace upwork_rss.Controllers;
+namespace UpworkRss.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

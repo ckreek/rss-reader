@@ -1,5 +1,5 @@
 
-namespace upwork_rss.Models;
+namespace UpworkRss.Web.Models;
 
 public class Pagination
 {

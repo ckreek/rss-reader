@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "upwork_rss": {
+    "UpworkRss.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7024;http://localhost:5195",

@@ -3,7 +3,7 @@
 using System.ServiceModel.Syndication;
 using System.Xml;
 
-namespace upwork_rss.Services;
+namespace UpworkRss.Web.Services;
 
 public class UpworkRssClient
 {

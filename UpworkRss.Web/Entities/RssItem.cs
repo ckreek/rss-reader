@@ -1,5 +1,5 @@
 
-namespace upwork_rss.Entities;
+namespace UpworkRss.Web.Entities;
 
 public class RssItem : BaseEntity
 {

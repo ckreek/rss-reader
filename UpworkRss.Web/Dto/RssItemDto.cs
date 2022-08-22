@@ -1,4 +1,4 @@
-namespace upwork_rss.Dto;
+namespace UpworkRss.Web.Dto;
 
 public class RssItemDto
 {

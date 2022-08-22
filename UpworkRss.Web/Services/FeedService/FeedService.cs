@@ -1,9 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
-using upwork_rss.Data;
-using upwork_rss.Entities;
+using UpworkRss.Web.Data;
+using UpworkRss.Web.Entities;
 
-namespace upwork_rss.Services;
+namespace UpworkRss.Web.Services;
 
 public class FeedService : IFeedService
 {

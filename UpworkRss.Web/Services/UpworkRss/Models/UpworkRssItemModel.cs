@@ -1,4 +1,4 @@
-namespace upwork_rss.Services;
+namespace UpworkRss.Web.Services;
 
 public class UpworkRssItemModel
 {
