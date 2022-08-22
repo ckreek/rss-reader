@@ -9,6 +9,28 @@ import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import { Feed } from "store/Feed/FeedStore";
+import { useRootStore } from "store/RootStore";
+
+interface DrawerListItemProps {
+  feed: Feed;
+}
+
+export const DrawerListItem = ({ feed }: DrawerListItemProps) => {
+  const { feedStore } = useRootStore();
+  const handleClick = () => {
+    feedStore.select(feed.id);
+  };
+
+  return (
+    <ListItemButton onClick={handleClick}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary={feed.name} />
+    </ListItemButton>
+  );
+};
 
 export const mainListItems = (
   <React.Fragment>

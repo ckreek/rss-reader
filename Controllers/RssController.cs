@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using upwork_rss.Data;
 using upwork_rss.Dto;
 using upwork_rss.Entities;
@@ -12,49 +11,56 @@ namespace upwork_rss.Controllers;
 [Route("api/[controller]")]
 public class RssController : ControllerBase
 {
-  private readonly ILogger<RssController> _logger;
-  private readonly IMapper _mapper;
-  private readonly AppDbContext _context;
-  private readonly UpworkRssClient _upworkRssClient;
-  private readonly IRssItemService _rssItemService;
+    private readonly ILogger<RssController> _logger;
+    private readonly IMapper _mapper;
+    private readonly UpworkRssClient _upworkRssClient;
+    private readonly IRssItemService _rssItemService;
+    private readonly IFeedService _feedService;
 
-  public RssController(
-    ILogger<RssController> logger,
-    IMapper mapper,
-    AppDbContext context,
-    UpworkRssClient upworkRssClient,
-    IRssItemService rssItemService
-    )
-  {
-    _logger = logger;
-    _mapper = mapper;
-    _context = context;
-    _upworkRssClient = upworkRssClient;
-    _rssItemService = rssItemService;
-  }
-
-  [HttpGet]
-  public async Task<IEnumerable<RssItemDto>> Get()
-  {
-    var newItems = _upworkRssClient.GetItems();
-    var mappedItems = newItems.Select(_mapper.Map<RssItem>);
-    await _rssItemService.SaveNewItems(mappedItems);
-    var items = await _rssItemService.List();
-    return items.Select(_mapper.Map<RssItemDto>);
-  }
-
-  [HttpPatch("{id}/hide")]
-  public async Task<IActionResult> Hide(long id)
-  {
-    var item = await _context.RssItems.FindAsync(id);
-    if (item == null)
+    public RssController(
+      ILogger<RssController> logger,
+      IMapper mapper,
+      UpworkRssClient upworkRssClient,
+      IRssItemService rssItemService,
+      IFeedService feedService
+      )
     {
-      return NotFound();
+        _logger = logger;
+        _mapper = mapper;
+        _upworkRssClient = upworkRssClient;
+        _rssItemService = rssItemService;
+        _feedService = feedService;
     }
 
-    item.Hidden = true;
-    await _context.SaveChangesAsync();
+    [HttpGet("{feedId}")]
+    public async Task<IActionResult> Get(long feedId)
+    {
+        var feed = await _feedService.Get(feedId);
+        if (feed == null)
+        {
+            return NotFound();
+        }
 
-    return Ok();
-  }
+        var newItems = _upworkRssClient.GetItems(feed.Url);
+        var mappedItems = newItems.Select(_mapper.Map<RssItem>);
+
+        await _rssItemService.SaveNewItems(feed.Id, mappedItems);
+
+        var items = await _rssItemService.List(feed.Id);
+        return Ok(items.Select(_mapper.Map<RssItemDto>));
+    }
+
+    [HttpPatch("{id}/hide")]
+    public async Task<IActionResult> Hide(long id)
+    {
+        var item = await _rssItemService.Get(id);
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        await _rssItemService.Hide(item);
+
+        return Ok();
+    }
 }

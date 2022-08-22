@@ -8,6 +8,7 @@ public static class ServiceConfigurator
     {
         services.AddScoped<UpworkRssClient>();
         services.AddScoped<IRssItemService, RssItemService>();
+        services.AddScoped<IFeedService, FeedService>();
     }
 
     public static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)

@@ -14,20 +14,23 @@ import { useRootStore } from "store/RootStore";
 import { useEffect, useState } from "react";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import MenuIcon from "@mui/icons-material/Menu";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
-import { mainListItems, secondaryListItems } from "listItems";
+import { DrawerListItem } from "listItems";
 
 const RssList = observer(() => {
-  const { rssItemStore } = useRootStore();
-  const { items } = rssItemStore;
+  const { rssItemStore, feedStore } = useRootStore();
+
+  const items = feedStore.selectedFeedId ? rssItemStore.getByFeedId(feedStore.selectedFeedId) : [];
 
   useEffect(() => {
-    rssItemStore.load();
-  }, [rssItemStore]);
+    if (feedStore.selectedFeedId) {
+      rssItemStore.load(feedStore.selectedFeedId);
+    }
+  }, [rssItemStore, feedStore.selectedFeedId]);
 
   return (
     <List sx={{ overflowY: "auto" }}>
@@ -44,7 +47,7 @@ const Header = () => {
   const { rssItemStore } = useRootStore();
 
   const handleRefreshClick = () => {
-    rssItemStore.load();
+    // rssItemStore.load();
   };
 
   return (
@@ -106,6 +109,24 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
+const SavedSearches = observer(() => {
+  const { feedStore } = useRootStore();
+
+  useEffect(() => {
+    feedStore.load();
+  }, [feedStore]);
+
+  return (
+    <List component="nav">
+      {/* {mainListItems} */}
+      {/* <Divider sx={{ my: 1 }} /> */}
+      {feedStore.feeds.map((feed) => (
+        <DrawerListItem key={feed.id} feed={feed} />
+      ))}
+    </List>
+  );
+});
+
 const App = () => {
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -159,11 +180,7 @@ const App = () => {
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component="nav">
-          {/* {mainListItems} */}
-          {/* <Divider sx={{ my: 1 }} /> */}
-          {secondaryListItems}
-        </List>
+        <SavedSearches />
       </Drawer>
 
       <Box

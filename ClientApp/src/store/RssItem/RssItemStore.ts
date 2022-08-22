@@ -1,26 +1,36 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { api } from "utils";
 
+type RssItemsByFeedId = {
+  [feedId: number]: RssItem[] | undefined;
+};
+
 export class RssItemStore {
-  items: RssItem[] = [];
+  itemsByFeedId: RssItemsByFeedId = {};
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  load = async () => {
-    const items = await api.get<RssItem[]>("/rss");
+  async load(feedId: number) {
+    const items = await api.get<RssItem[]>(`/rss/${feedId}`);
     runInAction(() => {
-      this.items = items;
+      this.itemsByFeedId[feedId] = items;
     });
-  };
+  }
 
-  hide = async (item: RssItem) => {
+  async hide(item: RssItem) {
     await api.patch(`/rss/${encodeURIComponent(item.id)}/hide`);
     runInAction(() => {
-      this.items = this.items.filter((x) => x.id !== item.id);
+      const items = this.itemsByFeedId[item.feedId] || [];
+      const filtered = items.filter((x) => x.id !== item.id);
+      this.itemsByFeedId[item.feedId] = filtered;
     });
-  };
+  }
+
+  getByFeedId(feedId: number) {
+    return this.itemsByFeedId[feedId] || [];
+  }
 }
 
 export interface RssItem {
@@ -29,4 +39,5 @@ export interface RssItem {
   summary: string;
   url: string;
   publishDate: string;
+  feedId: number;
 }

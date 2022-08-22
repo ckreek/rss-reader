@@ -50,4 +50,6 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<RssItem> RssItems { get; set; } = default!;
+
+    public DbSet<Feed> Feeds { get; set; } = default!;
 }

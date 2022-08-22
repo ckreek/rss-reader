@@ -16,6 +16,7 @@ public static class MapperConfigurator
         .ForMember(x => x.PublishDate, x => x.MapFrom(y => y.PublishDate.UtcDateTime))
         .ForMember(x => x.Url, x => x.MapFrom(y => y.Id))
         .ForMember(x => x.Id, x => x.Ignore());
+      cfg.CreateMap<Feed, FeedDto>();
     });
 
     services.AddScoped(m => config.CreateMapper());
