@@ -1,4 +1,4 @@
-﻿using UpworkRss.Web.Services;
+﻿using UpwrokRss.BusinessLayer.Services;
 
 namespace UpworkRss.Web.Configurations;
 

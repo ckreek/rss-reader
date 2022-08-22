@@ -1,4 +1,4 @@
-namespace UpworkRss.Web.Models;
+namespace UpwrokRss.BusinessLayer.Models;
 
 public class ListResult<T>
 {

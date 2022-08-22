@@ -1,8 +1,8 @@
 
-using UpworkRss.Web.Entities;
-using UpworkRss.Web.Models;
+using UpwrokRss.BusinessLayer.Entities;
+using UpwrokRss.BusinessLayer.Models;
 
-namespace UpworkRss.Web.Services;
+namespace UpwrokRss.BusinessLayer.Services;
 
 public interface IRssItemService
 {

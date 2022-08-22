@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using UpworkRss.Web.Dto;
-using UpworkRss.Web.Services;
+using UpwrokRss.BusinessLayer.Services;
 
 namespace UpworkRss.Web.Controllers;
 

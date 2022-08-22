@@ -1,10 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
-using UpworkRss.Web.Data;
-using UpworkRss.Web.Entities;
-using UpworkRss.Web.Models;
+using UpwrokRss.BusinessLayer.Data;
+using UpwrokRss.BusinessLayer.Entities;
+using UpwrokRss.BusinessLayer.Models;
 
-namespace UpworkRss.Web.Services;
+namespace UpwrokRss.BusinessLayer.Services;
 
 public class RssItemService : IRssItemService
 {

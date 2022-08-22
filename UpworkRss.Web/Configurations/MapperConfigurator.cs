@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using UpworkRss.Web.Dto;
-using UpworkRss.Web.Entities;
-using UpworkRss.Web.Services;
+using UpwrokRss.BusinessLayer.Entities;
+using UpwrokRss.BusinessLayer.Services;
 
 namespace UpworkRss.Web.Configurations;
 

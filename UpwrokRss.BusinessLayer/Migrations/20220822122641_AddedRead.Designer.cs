@@ -4,22 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UpworkRss.Web.Data;
+using UpwrokRss.BusinessLayer.Data;
 
 #nullable disable
 
-namespace UpworkRss.Web.Migrations
+namespace UpwrokRss.BusinessLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220822055455_AddedFeed")]
-    partial class AddedFeed
+    [Migration("20220822122641_AddedRead")]
+    partial class AddedRead
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
-            modelBuilder.Entity("UpworkRss.Web.Entities.Feed", b =>
+            modelBuilder.Entity("UpwrokRss.BusinessLayer.Entities.Feed", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace UpworkRss.Web.Migrations
                     b.ToTable("Feeds");
                 });
 
-            modelBuilder.Entity("UpworkRss.Web.Entities.RssItem", b =>
+            modelBuilder.Entity("UpwrokRss.BusinessLayer.Entities.RssItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,6 +61,9 @@ namespace UpworkRss.Web.Migrations
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Summary")
                         .IsRequired()
@@ -86,9 +89,9 @@ namespace UpworkRss.Web.Migrations
                     b.ToTable("RssItems");
                 });
 
-            modelBuilder.Entity("UpworkRss.Web.Entities.RssItem", b =>
+            modelBuilder.Entity("UpwrokRss.BusinessLayer.Entities.RssItem", b =>
                 {
-                    b.HasOne("UpworkRss.Web.Entities.Feed", "Feed")
+                    b.HasOne("UpwrokRss.BusinessLayer.Entities.Feed", "Feed")
                         .WithMany()
                         .HasForeignKey("FeedId")
                         .OnDelete(DeleteBehavior.Cascade)

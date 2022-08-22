@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace UpworkRss.Web.Migrations
+namespace UpwrokRss.BusinessLayer.Migrations
 {
     public partial class InitialCreate : Migration
     {

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace UpworkRss.Web.Migrations
+namespace UpwrokRss.BusinessLayer.Migrations
 {
     public partial class AddedRead : Migration
     {

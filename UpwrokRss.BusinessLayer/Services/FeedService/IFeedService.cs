@@ -1,7 +1,7 @@
 
-using UpworkRss.Web.Entities;
+using UpwrokRss.BusinessLayer.Entities;
 
-namespace UpworkRss.Web.Services;
+namespace UpwrokRss.BusinessLayer.Services;
 
 public interface IFeedService
 {

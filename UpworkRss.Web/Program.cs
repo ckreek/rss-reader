@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using UpworkRss.Web.Configurations;
-using UpworkRss.Web.Data;
+using UpwrokRss.BusinessLayer.Data;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

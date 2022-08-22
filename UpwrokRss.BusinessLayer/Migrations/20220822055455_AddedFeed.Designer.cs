@@ -4,22 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using UpworkRss.Web.Data;
+using UpwrokRss.BusinessLayer.Data;
 
 #nullable disable
 
-namespace UpworkRss.Web.Migrations
+namespace UpwrokRss.BusinessLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220821205354_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220822055455_AddedFeed")]
+    partial class AddedFeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
-            modelBuilder.Entity("UpworkRss.Web.Entities.RssItem", b =>
+            modelBuilder.Entity("UpwrokRss.BusinessLayer.Entities.Feed", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -27,6 +27,34 @@ namespace UpworkRss.Web.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Feeds");
+                });
+
+            modelBuilder.Entity("UpwrokRss.BusinessLayer.Entities.RssItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("FeedId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Hidden")
                         .HasColumnType("INTEGER");
@@ -51,9 +79,22 @@ namespace UpworkRss.Web.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FeedId");
+
                     b.HasIndex("Url");
 
                     b.ToTable("RssItems");
+                });
+
+            modelBuilder.Entity("UpwrokRss.BusinessLayer.Entities.RssItem", b =>
+                {
+                    b.HasOne("UpwrokRss.BusinessLayer.Entities.Feed", "Feed")
+                        .WithMany()
+                        .HasForeignKey("FeedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Feed");
                 });
 #pragma warning restore 612, 618
         }

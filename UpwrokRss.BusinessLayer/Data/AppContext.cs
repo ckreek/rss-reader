@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using UpworkRss.Web.Entities;
+using UpwrokRss.BusinessLayer.Entities;
 
-namespace UpworkRss.Web.Data;
+namespace UpwrokRss.BusinessLayer.Data;
 
 public class AppDbContext : DbContext
 {

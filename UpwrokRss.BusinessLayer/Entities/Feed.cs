@@ -1,5 +1,5 @@
 
-namespace UpworkRss.Web.Entities;
+namespace UpwrokRss.BusinessLayer.Entities;
 
 public class Feed : BaseEntity
 {
