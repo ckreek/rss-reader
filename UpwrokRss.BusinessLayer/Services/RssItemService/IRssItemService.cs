@@ -6,7 +6,7 @@ namespace UpwrokRss.BusinessLayer.Services;
 
 public interface IRssItemService
 {
-    Task SaveNewItems(long feedId, IEnumerable<RssItem> items);
+    Task<int> SaveNewItems(long feedId, IEnumerable<RssItem> items);
     Task<List<RssItem>> List(long feedId, Pagination pagination);
     Task<int> Count(long feedId);
     Task<RssItem?> Get(long id);

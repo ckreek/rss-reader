@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using UpworkRss.Background;
 using UpworkRss.Background.Configurations;
 using UpworkRss.BusinessLayer.Configurations;
@@ -10,6 +11,8 @@ services.ConfigureDb("upwork-rss.db");
 services.ConfigureServices();
 services.ConfigureMapper();
 
+services.AddLogging(configure => configure.AddConsole());
+
 var serviceProvider = services.BuildServiceProvider();
 
 while (true)
@@ -19,6 +22,6 @@ while (true)
     var readRssJob = scope.ServiceProvider.GetRequiredService<ReadRssJob>();
 
     await readRssJob.Execute();
-    
+
     await Task.Delay(1000 * 5);
 }

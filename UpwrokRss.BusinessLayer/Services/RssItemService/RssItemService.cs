@@ -15,7 +15,7 @@ public class RssItemService : IRssItemService
         _context = context;
     }
 
-    public async Task SaveNewItems(long feedId, IEnumerable<RssItem> items)
+    public async Task<int> SaveNewItems(long feedId, IEnumerable<RssItem> items)
     {
         var urls = items.Select(x => x.Url);
         var uploadedUrls = await _context.RssItems.AsNoTracking()
@@ -32,6 +32,7 @@ public class RssItemService : IRssItemService
             _context.RssItems.AddRange(notUploaded);
             await _context.SaveChangesAsync();
         }
+        return notUploaded.Count;
     }
 
     public async Task<List<RssItem>> List(long feedId, Pagination pagination)
