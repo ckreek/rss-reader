@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using upwork_rss.Data;
 using upwork_rss.Entities;
+using upwork_rss.Models;
 
 namespace upwork_rss.Services;
 
@@ -33,15 +34,23 @@ public class RssItemService : IRssItemService
         }
     }
 
-    public async Task<List<RssItem>> List(long feedId)
+    public async Task<List<RssItem>> List(long feedId, Pagination pagination)
     {
-        var items = await _context.RssItems.AsNoTracking()
-            .Where(x => x.FeedId == feedId && !x.Hidden)
+        var items = await QueryFeedItems(feedId)
+            .AsNoTracking()
             .OrderByDescending(x => x.PublishDate)
+            .Skip(pagination.Skip)
+            .Take(pagination.Limit)
             .ToListAsync();
         return items;
     }
 
+    public async Task<int> Count(long feedId)
+    {
+        var items = await QueryFeedItems(feedId)
+            .CountAsync();
+        return items;
+    }
 
     public async Task<RssItem?> Get(long id)
     {
@@ -53,5 +62,10 @@ public class RssItemService : IRssItemService
     {
         item.Hidden = true;
         await _context.SaveChangesAsync();
+    }
+
+    private IQueryable<RssItem> QueryFeedItems(long feedId)
+    {
+        return _context.RssItems.Where(x => x.FeedId == feedId && !x.Hidden);
     }
 }

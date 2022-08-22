@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using upwork_rss.Data;
 using upwork_rss.Dto;
 using upwork_rss.Entities;
+using upwork_rss.Models;
 using upwork_rss.Services;
 
 namespace upwork_rss.Controllers;
@@ -33,7 +33,7 @@ public class RssController : ControllerBase
     }
 
     [HttpGet("{feedId}")]
-    public async Task<IActionResult> Get(long feedId)
+    public async Task<IActionResult> Get(long feedId, int page)
     {
         var feed = await _feedService.Get(feedId);
         if (feed == null)
@@ -46,8 +46,13 @@ public class RssController : ControllerBase
 
         await _rssItemService.SaveNewItems(feed.Id, mappedItems);
 
-        var items = await _rssItemService.List(feed.Id);
-        return Ok(items.Select(_mapper.Map<RssItemDto>));
+        var items = await _rssItemService.List(feed.Id, new Pagination(page));
+        var total = await _rssItemService.Count(feed.Id);
+        return Ok(new ListResult<RssItemDto>
+        {
+            Total = total,
+            List = items.Select(_mapper.Map<RssItemDto>),
+        });
     }
 
     [HttpPatch("{id}/hide")]

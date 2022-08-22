@@ -5,6 +5,7 @@ import {
   IconButton,
   List,
   ListItem,
+  Pagination,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -25,8 +26,16 @@ const RssList = observer(() => {
   const { rssItemStore, feedStore } = useRootStore();
 
   const items = feedStore.selectedFeed
-    ? rssItemStore.getByFeedId(feedStore.selectedFeed.id)
+    ? rssItemStore.getItemsByFeedId(feedStore.selectedFeed.id)
     : [];
+
+  const page = feedStore.selectedFeed
+    ? rssItemStore.getPageByFeedId(feedStore.selectedFeed.id)
+    : 0;
+
+  const count = feedStore.selectedFeed
+    ? rssItemStore.getCountByFeedId(feedStore.selectedFeed.id)
+    : 0;
 
   useEffect(() => {
     if (feedStore.selectedFeed) {
@@ -34,14 +43,31 @@ const RssList = observer(() => {
     }
   }, [rssItemStore, feedStore.selectedFeed]);
 
+  const handleChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    if (feedStore.selectedFeed) {
+      rssItemStore.setPage(feedStore.selectedFeed.id, value);
+    }
+  };
+
   return (
-    <List sx={{ overflowY: "auto" }}>
-      {items.map((x) => (
-        <ListItem key={x.id}>
-          <RssItemCard item={x} />
-        </ListItem>
-      ))}
-    </List>
+    <>
+      <List sx={{ overflowY: "auto" }}>
+        {items.map((x) => (
+          <ListItem key={x.id}>
+            <RssItemCard item={x} />
+          </ListItem>
+        ))}
+      </List>
+      <Pagination
+        count={count}
+        showFirstButton
+        showLastButton
+        variant="outlined"
+        shape="rounded"
+        page={page}
+        onChange={handleChange}
+      />
+    </>
   );
 });
 
@@ -135,7 +161,7 @@ interface HeaderProps {
 }
 
 const Header = observer(({ open, toggleDrawer }: HeaderProps) => {
-  const { feedStore } = useRootStore()
+  const { feedStore } = useRootStore();
 
   return (
     <AppBar position="absolute" open={open}>
