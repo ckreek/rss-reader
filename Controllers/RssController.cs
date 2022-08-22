@@ -68,4 +68,18 @@ public class RssController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPatch("{id}/read")]
+    public async Task<IActionResult> Read(long id)
+    {
+        var item = await _rssItemService.Get(id);
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        await _rssItemService.Read(item);
+
+        return Ok();
+    }
 }

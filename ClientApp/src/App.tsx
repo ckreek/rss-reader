@@ -39,7 +39,7 @@ const RssList = observer(() => {
 
   useEffect(() => {
     if (feedStore.selectedFeed) {
-      rssItemStore.load(feedStore.selectedFeed.id);
+      rssItemStore.reload(feedStore.selectedFeed.id);
     }
   }, [rssItemStore, feedStore.selectedFeed]);
 

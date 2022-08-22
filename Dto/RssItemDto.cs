@@ -7,5 +7,6 @@ public class RssItemDto
   public string Summary { get; set; } = default!;
   public string Url { get; set; } = default!;
   public DateTime PublishDate { get; set; }
+  public bool Read { get; set; }
   public long FeedId { get; set; }
 }

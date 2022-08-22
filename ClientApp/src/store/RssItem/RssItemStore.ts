@@ -19,7 +19,6 @@ export class RssItemStore {
   }
 
   async load(feedId: number) {
-    this.itemsByFeedId[feedId] = [];
     const page = this.getPageByFeedId(feedId) - 1;
     const result = await api.get<ListResult<RssItem>>(
       `/rss/${feedId}?page=${page}`
@@ -30,14 +29,25 @@ export class RssItemStore {
     });
   }
 
+  async reload(feedId: number) {
+    this.itemsByFeedId[feedId] = [];
+    this.load(feedId);
+  }
+
   async hide(item: RssItem) {
-    await api.patch(`/rss/${encodeURIComponent(item.id)}/hide`);
+    await api.patch(`/rss/${item.id}/hide`);
     await this.load(item.feedId);
+  }
+
+  async read(item: RssItem) {
+    item.read = !item.read;
+    await api.patch(`/rss/${item.id}/read`);
   }
 
   async setPage(feedId: number, page: number) {
     this.pageByFeedId[feedId] = page;
-    await this.load(feedId);
+    this.itemsByFeedId[feedId] = [];
+    await this.reload(feedId);
   }
 
   getItemsByFeedId(feedId: number) {
@@ -61,4 +71,5 @@ export interface RssItem {
   url: string;
   publishDate: string;
   feedId: number;
+  read: boolean;
 }

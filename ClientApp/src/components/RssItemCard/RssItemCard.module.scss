@@ -1,0 +1,40 @@
+.overlayWrapper {
+    .overlayContainer {
+        visibility: hidden;
+        transition: visibility 0.3s linear;
+    }
+
+    .overlay {
+        opacity: 0;
+        background-color: rgba(0, 0, 0);
+        transition: opacity 0.3s linear;
+    }
+
+    .buttonContainer {
+        visibility: hidden;
+    }
+
+    &:hover {
+        .overlayContainer {
+            visibility: visible;
+        }
+
+        .overlay {
+            opacity: 0.3;
+        }
+
+        .buttonContainer {
+            visibility: visible;
+        }
+    }
+
+    .button {
+        width: calc(50%);
+        // height: 0%;
+        margin: 5px 0;
+    }
+}
+
+.read {
+    background-color: rgba(0, 0, 0, 0.2);
+}

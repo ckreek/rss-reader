@@ -11,4 +11,5 @@ public interface IRssItemService
     Task<int> Count(long feedId);
     Task<RssItem?> Get(long id);
     Task Hide(RssItem item);
+    Task Read(RssItem item);
 }

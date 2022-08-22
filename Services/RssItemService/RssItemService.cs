@@ -64,6 +64,12 @@ public class RssItemService : IRssItemService
         await _context.SaveChangesAsync();
     }
 
+    public async Task Read(RssItem item)
+    {
+        item.Read = !item.Read;
+        await _context.SaveChangesAsync();
+    }
+
     private IQueryable<RssItem> QueryFeedItems(long feedId)
     {
         return _context.RssItems.Where(x => x.FeedId == feedId && !x.Hidden);
