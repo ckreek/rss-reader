@@ -20,7 +20,9 @@
                 "${workspaceFolder}/UpworkRss.Background/UpworkRss.Background.csproj",
                 "-r",
                 "osx-x64",
-                "--no-self-contained"
+                "--no-self-contained",
+                "-c",
+                "Release"
             ],
             "problemMatcher": "$msCompile"
         },
