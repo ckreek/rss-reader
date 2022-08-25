@@ -39,7 +39,7 @@ namespace UpwrokRss.BusinessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Feeds");
+                    b.ToTable("Feeds", (string)null);
                 });
 
             modelBuilder.Entity("UpwrokRss.BusinessLayer.Entities.RssItem", b =>
@@ -84,7 +84,7 @@ namespace UpwrokRss.BusinessLayer.Migrations
 
                     b.HasIndex("Url");
 
-                    b.ToTable("RssItems");
+                    b.ToTable("RssItems", (string)null);
                 });
 
             modelBuilder.Entity("UpwrokRss.BusinessLayer.Entities.RssItem", b =>

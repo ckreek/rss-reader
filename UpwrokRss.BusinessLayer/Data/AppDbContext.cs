@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using UpwrokRss.BusinessLayer.Entities;
 
@@ -47,6 +48,14 @@ public class AppDbContext : DbContext
 
         builder.Entity<RssItem>()
             .HasIndex(x => x.Url);
+
+        builder.Entity<RssItem>()
+            .Property(x => x.PublishDate)
+            .HasConversion(
+                x => x.ToString("yyyy-dd-MMThh:mm:ss %K")
+                , x => DateTime.Parse(x, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
+                // , x => DateTime.ParseExact(x, new [] {"yyyy-MM-ddThh:mm:ss %K", "yyyy-MM-dd hh:mm:ss"}, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
+            );
     }
 
     public DbSet<RssItem> RssItems { get; set; } = default!;
