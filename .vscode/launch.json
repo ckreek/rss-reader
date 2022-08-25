@@ -5,7 +5,7 @@
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build-Background",
+            "preLaunchTask": "Build: Background",
             "program": "${workspaceFolder}/UpworkRss.Background/bin/Debug/net6.0/UpworkRss.Background.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
