@@ -72,17 +72,16 @@ const RssList = observer(() => {
   );
 });
 
-const Header2 = () => {
+const RefreshButton = () => {
+  const { feedStore, rssItemStore } = useRootStore();
   const handleRefreshClick = () => {
-    // rssItemStore.load();
+    rssItemStore.setPage(feedStore.selectedFeed.id, 0);
   };
 
   return (
-    <Box height="50px" paddingX="8px">
-      <IconButton onClick={handleRefreshClick}>
-        <RefreshIcon />
-      </IconButton>
-    </Box>
+    <IconButton onClick={handleRefreshClick}>
+      <RefreshIcon style={{ color: "white" }} />
+    </IconButton>
   );
 };
 
@@ -181,15 +180,10 @@ const Header = observer(({ open, toggleDrawer }: HeaderProps) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          sx={{ flexGrow: 1 }}
-        >
+        <Typography component="h1" variant="h6" color="inherit" noWrap>
           Feed | {feedStore.selectedFeed?.name}
         </Typography>
+        <RefreshButton />
       </Toolbar>
     </AppBar>
   );
