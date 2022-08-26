@@ -1,9 +1,19 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { api } from "utils";
 
+export interface Feed {
+  id: number;
+  name: string;
+}
+
+export const allFeed: Feed = {
+  id: 0,
+  name: "All",
+};
+
 export class FeedStore {
   feeds: Feed[] = [];
-  selectedFeed: Feed | undefined;
+  selectedFeed: Feed = allFeed;
 
   constructor() {
     makeAutoObservable(this);
@@ -13,18 +23,11 @@ export class FeedStore {
     const feeds = await api.get<Feed[]>("/feed");
     runInAction(() => {
       this.feeds = feeds;
-      if (this.feeds.length > 0) {
-        this.selectedFeed = this.feeds[0];
-      }
+      this.select(allFeed);
     });
   }
 
   select(feed: Feed) {
     this.selectedFeed = feed;
   }
-}
-
-export interface Feed {
-  id: number;
-  name: string;
 }

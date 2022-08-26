@@ -2,6 +2,11 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { ListResult } from "store/types/Common";
 import { api } from "utils";
 
+interface RssItemFilters {
+  feedId: number;
+  page: number;
+}
+
 type RssItemsByFeedId = {
   [feedId: number]: RssItem[] | undefined;
 };
@@ -22,9 +27,10 @@ export class RssItemStore {
   async load(feedId: number) {
     this.loading = true;
     const page = this.getPageByFeedId(feedId) - 1;
-    const result = await api.get<ListResult<RssItem>>(
-      `/rss/${feedId}?page=${page}`
-    );
+    const result = await api.get<ListResult<RssItem>, RssItemFilters>(`/rss`, {
+      feedId,
+      page,
+    });
     runInAction(() => {
       this.itemsByFeedId[feedId] = result.list;
       this.totalByFeedId[feedId] = result.total;
@@ -37,9 +43,9 @@ export class RssItemStore {
     this.load(feedId);
   }
 
-  async hide(item: RssItem) {
+  async hide(item: RssItem, feedId: number) {
     await api.patch(`/rss/${item.id}/hide`);
-    await this.load(item.feedId);
+    await this.load(feedId);
   }
 
   async read(item: RssItem) {

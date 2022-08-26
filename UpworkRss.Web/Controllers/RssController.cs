@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using UpworkRss.Web.Dto;
-using UpwrokRss.BusinessLayer.Entities;
 using UpwrokRss.BusinessLayer.Models;
 using UpwrokRss.BusinessLayer.Services;
 
@@ -29,17 +28,20 @@ public class RssController : ControllerBase
         _feedService = feedService;
     }
 
-    [HttpGet("{feedId}")]
-    public async Task<IActionResult> Get(long feedId, int page)
+    [HttpGet]
+    public async Task<IActionResult> List([FromQuery] RssItemFilters filters)
     {
-        var feed = await _feedService.Get(feedId);
-        if (feed == null)
+        if (filters.FeedId > 0)
         {
-            return NotFound();
+            var feed = await _feedService.Get(filters.FeedId);
+            if (feed == null)
+            {
+                return NotFound();
+            }
         }
 
-        var items = await _rssItemService.List(feed.Id, new Pagination(page));
-        var total = await _rssItemService.Count(feed.Id);
+        var items = await _rssItemService.List(filters);
+        var total = await _rssItemService.Count(filters);
         return Ok(new ListResult<RssItemDto>
         {
             Total = total,

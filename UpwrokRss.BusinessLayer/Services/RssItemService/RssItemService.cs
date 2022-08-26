@@ -35,20 +35,23 @@ public class RssItemService : IRssItemService
         return notUploaded.Count;
     }
 
-    public async Task<List<RssItem>> List(long feedId, Pagination pagination)
+    public async Task<List<RssItem>> List(RssItemFilters filters)
     {
-        var items = await QueryFeedItems(feedId)
+        var pagination = new Pagination(filters.Page);
+
+        var items = await QueryFeedItems(filters)
             .AsNoTracking()
             .OrderByDescending(x => x.PublishDate)
             .Skip(pagination.Skip)
             .Take(pagination.Limit)
             .ToListAsync();
+
         return items;
     }
 
-    public async Task<int> Count(long feedId)
+    public async Task<int> Count(RssItemFilters filters)
     {
-        var items = await QueryFeedItems(feedId)
+        var items = await QueryFeedItems(filters)
             .CountAsync();
         return items;
     }
@@ -71,8 +74,14 @@ public class RssItemService : IRssItemService
         await _context.SaveChangesAsync();
     }
 
-    private IQueryable<RssItem> QueryFeedItems(long feedId)
+    private IQueryable<RssItem> QueryFeedItems(RssItemFilters filters)
     {
-        return _context.RssItems.Where(x => x.FeedId == feedId && !x.Hidden);
+        var query = _context.RssItems.Where(x => !x.Hidden);
+
+        if (filters.FeedId > 0) {
+            query = query.Where(x => x.FeedId == filters.FeedId);
+        }
+
+        return query;
     }
 }

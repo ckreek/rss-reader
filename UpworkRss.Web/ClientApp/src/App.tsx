@@ -21,6 +21,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import { DrawerListItem } from "listItems";
+import { allFeed } from "store/Feed/FeedStore";
 
 const RssList = observer(() => {
   const { rssItemStore, feedStore } = useRootStore();
@@ -72,8 +73,6 @@ const RssList = observer(() => {
 });
 
 const Header2 = () => {
-  const { rssItemStore } = useRootStore();
-
   const handleRefreshClick = () => {
     // rssItemStore.load();
   };
@@ -146,8 +145,8 @@ const SavedSearches = observer(() => {
 
   return (
     <List component="nav">
-      {/* {mainListItems} */}
-      {/* <Divider sx={{ my: 1 }} /> */}
+      <DrawerListItem key={allFeed.id} feed={allFeed} />
+      <Divider sx={{ my: 1 }} />
       {feedStore.feeds.map((feed) => (
         <DrawerListItem key={feed.id} feed={feed} />
       ))}

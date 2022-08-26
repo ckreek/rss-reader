@@ -3,7 +3,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { RssItem } from "store/RssItem/RssItemStore";
 import { useEffect, useRef } from "react";
-import { Box, Button, CardActions } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { formatDate } from "utils";
 import { useRootStore } from "store/RootStore";
 import styles from "./RssItemCard.module.scss";
@@ -14,7 +14,7 @@ interface RssItemCardProps {
 }
 
 export const RssItemCard = observer(({ item }: RssItemCardProps) => {
-  const { rssItemStore } = useRootStore();
+  const { rssItemStore, feedStore } = useRootStore();
   const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export const RssItemCard = observer(({ item }: RssItemCardProps) => {
   }, [item.summary]);
 
   const handleHideClick = async () => {
-    await rssItemStore.hide(item);
+    await rssItemStore.hide(item, feedStore.selectedFeed.id);
   };
 
   const handleReadClick = async () => {
