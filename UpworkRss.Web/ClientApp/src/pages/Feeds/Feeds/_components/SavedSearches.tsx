@@ -10,7 +10,9 @@ export const SavedSearches = observer(() => {
   const { feedStore } = useRootStore();
 
   useEffect(() => {
-    feedStore.load();
+    if (feedStore.feeds.length === 0) {
+      feedStore.load();
+    }
   }, [feedStore]);
 
   return (

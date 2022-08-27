@@ -4,11 +4,18 @@ import { api } from "utils";
 export interface Feed {
   id: number;
   name: string;
+  url: string;
+}
+
+interface FeedCreateDto {
+  name: string;
+  url: string;
 }
 
 export const allFeed: Feed = {
   id: 0,
   name: "All",
+  url: "",
 };
 
 export class FeedStore {
@@ -19,15 +26,28 @@ export class FeedStore {
     makeAutoObservable(this);
   }
 
-  async load() {
+  async load(selectedId: number = allFeed.id) {
     const feeds = await api.get<Feed[]>("/feed");
     runInAction(() => {
       this.feeds = feeds;
-      this.select(allFeed);
+      const selected = this.feeds.find((x) => x.id === selectedId) || allFeed;
+      this.select(selected);
     });
   }
 
   select(feed: Feed) {
     this.selectedFeed = feed;
+  }
+
+  async add(dto: FeedCreateDto) {
+    const feed = await api.post<Feed>(`/feed`, dto);
+    await this.load(feed.id);
+  }
+
+  async delete() {
+    if (this.selectedFeed.id !== allFeed.id) {
+      await api.del(`/feed/${this.selectedFeed.id}`);
+      await this.load();
+    }
   }
 }

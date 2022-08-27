@@ -1,42 +1,59 @@
 import { IconButton, Toolbar, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useRootStore } from "store/RootStore";
 import MenuIcon from "@mui/icons-material/Menu";
-import { RefreshButton } from "./RefreshButton";
 import { AppBar } from "./AppBar";
+import { ReactNode } from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
-  open: boolean;
-  toggleDrawer: () => void;
+  open?: boolean;
+  toggleDrawer?: () => void;
+  children?: ReactNode;
+  title: ReactNode;
+  hasBack?: boolean;
 }
 
-export const Header = observer(({ open, toggleDrawer }: HeaderProps) => {
-  const { feedStore } = useRootStore();
+export const Header = observer(
+  ({ open, toggleDrawer, children, title, hasBack }: HeaderProps) => {
+    const navigate = useNavigate();
 
-  return (
-    <AppBar position="absolute" open={open}>
-      <Toolbar
-        sx={{
-          pr: "24px",
-        }}
-      >
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          onClick={toggleDrawer}
+    const handleBackClick = () => {
+      navigate("/feeds");
+    };
+
+    return (
+      <AppBar position="absolute" open={open}>
+        <Toolbar
           sx={{
-            marginRight: "36px",
-            ...(open && { display: "none" }),
+            pr: "24px",
           }}
         >
-          <MenuIcon />
-        </IconButton>
-        <Typography component="h1" variant="h6" color="inherit" noWrap>
-          Feed | {feedStore.selectedFeed?.name}
-        </Typography>
-        <RefreshButton />
-      </Toolbar>
-    </AppBar>
-  );
-});
+          {toggleDrawer && (
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: "36px",
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          {hasBack && (
+            <IconButton onClick={handleBackClick}>
+              <ArrowBackIcon style={{ color: "white" }} />
+            </IconButton>
+          )}
+          <Typography component="h1" variant="h6" color="inherit" noWrap>
+            {title}
+          </Typography>
+          {children}
+        </Toolbar>
+      </AppBar>
+    );
+  }
+);

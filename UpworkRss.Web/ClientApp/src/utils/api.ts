@@ -51,8 +51,16 @@ const patch = async <T>(url: string, data?: object) => {
   return (await parseResponse(response)) as T;
 };
 
+const del = async <T>(url: string) => {
+  const response = await fetch(baseUrl + url, {
+    method: "DELETE",
+  });
+  return (await parseResponse(response)) as T;
+};
+
 export const api = {
   get,
   post,
   patch,
+  del,
 };
