@@ -7,10 +7,10 @@ import {
   TextField,
   Toolbar,
 } from "@mui/material";
+import { Header } from "components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRootStore } from "store/RootStore";
-import { Header } from "../_components";
 
 export const FeedsCreate = () => {
   const navigate = useNavigate();

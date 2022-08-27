@@ -71,6 +71,17 @@ export class RssItemStore {
     const total = this.totalByFeedId[feedId] || 0;
     return Math.ceil(total / 10);
   }
+
+  getItem(feedId: number, postId: number) {
+    const items = this.getItemsByFeedId(feedId);
+    const item = items.find((x) => x.id === postId);
+    console.log({
+      feedId,
+      items,
+      item,
+    });
+    return item;
+  }
 }
 
 export interface RssItem {

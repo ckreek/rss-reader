@@ -9,13 +9,15 @@ import { useRootStore } from "store/RootStore";
 import styles from "./RssItemCard.module.scss";
 import { observer } from "mobx-react-lite";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check";
+import { useNavigate } from "react-router-dom";
 
 interface RssItemCardProps {
   item: RssItem;
 }
 
 export const RssItemCard = observer(({ item }: RssItemCardProps) => {
+  const navigate = useNavigate();
   const { rssItemStore, feedStore } = useRootStore();
   const ref = useRef<HTMLSpanElement | null>(null);
   const [copied, setCopied] = useState(false);
@@ -34,9 +36,13 @@ export const RssItemCard = observer(({ item }: RssItemCardProps) => {
     await rssItemStore.read(item);
   };
 
-  const copyUrlClick = async () => {
+  const handleCopyUrlClick = async () => {
     navigator.clipboard.writeText(item.url);
     setCopied(true);
+  };
+
+  const handleViewClick = async () => {
+    navigate(`/feeds/${feedStore.selectedFeed.id}/posts/${item.id}`);
   };
 
   useEffect(() => {
@@ -100,7 +106,15 @@ export const RssItemCard = observer(({ item }: RssItemCardProps) => {
             flexDirection="column"
           >
             <Button
-              variant="outlined"
+              variant="contained"
+              color="primary"
+              className={styles.button}
+              onClick={handleViewClick}
+            >
+              View
+            </Button>
+            <Button
+              variant="contained"
               color="primary"
               className={styles.button}
               onClick={handleReadClick}
@@ -119,7 +133,7 @@ export const RssItemCard = observer(({ item }: RssItemCardProps) => {
               variant="contained"
               color="primary"
               className={styles.button}
-              onClick={copyUrlClick}
+              onClick={handleCopyUrlClick}
             >
               Copy URL&nbsp;
               <ContentCopyIcon

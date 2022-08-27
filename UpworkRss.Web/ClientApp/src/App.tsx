@@ -1,4 +1,4 @@
-import { Feeds, FeedsCreate } from "pages";
+import { Feeds, FeedsCreate, Posts } from "pages";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 const App = () => {
@@ -7,6 +7,7 @@ const App = () => {
       <Routes>
         <Route path="/feeds" element={<Feeds />} />
         <Route path="/feeds/create" element={<FeedsCreate />} />
+        <Route path="/feeds/:feedId/posts/:postId" element={<Posts />} />
         <Route path="*" element={<Navigate to="/feeds" replace />} />
       </Routes>
     </BrowserRouter>
