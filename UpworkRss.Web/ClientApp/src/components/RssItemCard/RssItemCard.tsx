@@ -69,7 +69,7 @@ export const RssItemCard = observer(({ item }: RssItemCardProps) => {
         right={0}
         position="absolute"
         height="100%"
-        width="50%"
+        width="33.3%"
       >
         <Box
           className={styles.overlayContainer}
@@ -108,7 +108,7 @@ export const RssItemCard = observer(({ item }: RssItemCardProps) => {
               Read
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
               color="primary"
               className={styles.button}
               onClick={handleHideClick}
@@ -116,7 +116,7 @@ export const RssItemCard = observer(({ item }: RssItemCardProps) => {
               Hide
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
               color="primary"
               className={styles.button}
               onClick={copyUrlClick}
