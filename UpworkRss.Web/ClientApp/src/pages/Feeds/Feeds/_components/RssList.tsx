@@ -2,6 +2,7 @@ import { List, ListItem, Pagination } from "@mui/material";
 import { RssItemCard } from "components";
 import { observer } from "mobx-react-lite";
 import { useRootStore } from "store/RootStore";
+import { RssItemCardListItem } from "./RssItemCardListItem";
 
 export const RssList = observer(() => {
   const { rssItemStore, feedStore } = useRootStore();
@@ -28,9 +29,7 @@ export const RssList = observer(() => {
     <>
       <List sx={{ overflowY: "auto" }}>
         {items.map((x) => (
-          <ListItem key={x.id}>
-            <RssItemCard item={x} />
-          </ListItem>
+          <RssItemCardListItem key={x.id} item={x} />
         ))}
       </List>
       <Pagination

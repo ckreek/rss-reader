@@ -14,142 +14,159 @@ import { useNavigate } from "react-router-dom";
 
 interface RssItemCardProps {
   item: RssItem;
+  onGoToNext?: () => {};
 }
 
-export const RssItemCard = observer(({ item }: RssItemCardProps) => {
-  const navigate = useNavigate();
-  const { rssItemStore, feedStore } = useRootStore();
-  const ref = useRef<HTMLSpanElement | null>(null);
-  const [copied, setCopied] = useState(false);
+export const RssItemCard = observer(
+  ({ item, onGoToNext }: RssItemCardProps) => {
+    const navigate = useNavigate();
+    const { rssItemStore, feedStore } = useRootStore();
+    const ref = useRef<HTMLSpanElement | null>(null);
+    const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.innerHTML = item.summary;
-    }
-  }, [item.summary]);
+    useEffect(() => {
+      if (ref.current) {
+        ref.current.innerHTML = item.summary;
+      }
+    }, [item.summary]);
 
-  const handleHideClick = async () => {
-    await rssItemStore.hide(item, feedStore.selectedFeed.id);
-  };
+    const handleHideClick = async () => {
+      await rssItemStore.hide(item, feedStore.selectedFeed.id);
+    };
 
-  const handleReadClick = async () => {
-    await rssItemStore.read(item);
-  };
+    const handleReadClick = async () => {
+      await rssItemStore.read(item);
+    };
 
-  const handleCopyUrlClick = async () => {
-    navigator.clipboard.writeText(item.url);
-    setCopied(true);
-  };
+    const handleCopyUrlClick = async () => {
+      navigator.clipboard.writeText(item.url);
+      setCopied(true);
+    };
 
-  const handleViewClick = async () => {
-    navigate(`/feeds/${feedStore.selectedFeed.id}/posts/${item.id}`);
-  };
+    const handleViewClick = async () => {
+      navigate(`/feeds/${feedStore.selectedFeed.id}/posts/${item.id}`);
+    };
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (copied) setCopied(false);
-    }, 500);
+    const handleGoToNextClick = async () => {
+      if (onGoToNext) {
+        onGoToNext();
+      }
+    };
 
-    return () => clearTimeout(timeout);
-  }, [copied]);
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        if (copied) setCopied(false);
+      }, 500);
 
-  return (
-    <Card sx={{ width: "100%", position: "relative" }}>
-      <CardContent className={item.read ? styles.read : ""}>
-        <Box display="flex" alignItems="center">
-          <Typography gutterBottom variant="h5" component="div">
-            {item.title.replace(" - Upwork", "")}
+      return () => clearTimeout(timeout);
+    }, [copied]);
+
+    return (
+      <Card sx={{ width: "100%", position: "relative" }}>
+        <CardContent className={item.read ? styles.read : ""}>
+          <Box display="flex" alignItems="center">
+            <Typography gutterBottom variant="h5" component="div">
+              {item.title.replace(" - Upwork", "")}
+            </Typography>
+            <Typography variant="subtitle2">
+              {", "}
+              {formatDate(item.publishDate)}
+            </Typography>
+          </Box>
+          <Typography ref={ref} variant="body2">
+            {item.summary}
           </Typography>
-          <Typography variant="subtitle2">
-            {", "}
-            {formatDate(item.publishDate)}
-          </Typography>
-        </Box>
-        <Typography ref={ref} variant="body2">
-          {item.summary}
-        </Typography>
-      </CardContent>
-      <Box
-        className={styles.overlayWrapper}
-        top={0}
-        right={0}
-        position="absolute"
-        height="100%"
-        width="33.3%"
-      >
+        </CardContent>
         <Box
-          className={styles.overlayContainer}
+          className={styles.overlayWrapper}
           top={0}
           right={0}
           position="absolute"
           height="100%"
-          width="100%"
+          width="33.3%"
         >
           <Box
-            className={styles.overlay}
+            className={styles.overlayContainer}
             top={0}
             right={0}
             position="absolute"
             height="100%"
             width="100%"
-          />
-          <Box
-            className={styles.buttonContainer}
-            top={0}
-            right={0}
-            position="absolute"
-            height="100%"
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
           >
-            <Button
-              variant="contained"
-              color="primary"
-              className={styles.button}
-              onClick={handleViewClick}
+            <Box
+              className={styles.overlay}
+              top={0}
+              right={0}
+              position="absolute"
+              height="100%"
+              width="100%"
+            />
+            <Box
+              className={styles.buttonContainer}
+              top={0}
+              right={0}
+              position="absolute"
+              height="100%"
+              width="100%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              flexDirection="column"
             >
-              View
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={styles.button}
-              onClick={handleReadClick}
-            >
-              Read
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={styles.button}
-              onClick={handleHideClick}
-            >
-              Hide
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              className={styles.button}
-              onClick={handleCopyUrlClick}
-            >
-              Copy URL&nbsp;
-              <ContentCopyIcon
-                sx={{
-                  display: !copied ? "block" : "none",
-                }}
-              />
-              <CheckIcon
-                sx={{
-                  display: copied ? "block" : "none",
-                }}
-              />
-            </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={styles.button}
+                onClick={handleViewClick}
+              >
+                View
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={styles.button}
+                onClick={handleReadClick}
+              >
+                Read
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={styles.button}
+                onClick={handleHideClick}
+              >
+                Hide
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={styles.button}
+                onClick={handleCopyUrlClick}
+              >
+                Copy URL&nbsp;
+                <ContentCopyIcon
+                  sx={{
+                    display: !copied ? "block" : "none",
+                  }}
+                />
+                <CheckIcon
+                  sx={{
+                    display: copied ? "block" : "none",
+                  }}
+                />
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={styles.button}
+                onClick={handleGoToNextClick}
+              >
+                Go to next
+              </Button>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Card>
-  );
-});
+      </Card>
+    );
+  }
+);
