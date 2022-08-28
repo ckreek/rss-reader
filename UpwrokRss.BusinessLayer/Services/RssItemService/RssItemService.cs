@@ -82,6 +82,10 @@ public class RssItemService : IRssItemService
             query = query.Where(x => x.FeedId == filters.FeedId);
         }
 
+        if (!filters.ShowRead) {
+            query = query.Where(x => !x.Read);
+        }
+
         return query;
     }
 }

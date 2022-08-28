@@ -5,6 +5,7 @@ import { api } from "utils";
 interface RssItemFilters {
   feedId: number;
   page: number;
+  showRead: boolean;
 }
 
 type RssItemsByFeedId = {
@@ -19,6 +20,7 @@ export class RssItemStore {
   pageByFeedId: NumberByFeedId = {};
   totalByFeedId: NumberByFeedId = {};
   loading = false;
+  showRead = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -30,6 +32,7 @@ export class RssItemStore {
     const result = await api.get<ListResult<RssItem>, RssItemFilters>(`/rss`, {
       feedId,
       page,
+      showRead: this.showRead,
     });
     runInAction(() => {
       this.itemsByFeedId[feedId] = result.list;

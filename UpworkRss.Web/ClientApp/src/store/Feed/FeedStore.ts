@@ -30,8 +30,10 @@ export class FeedStore {
     const feeds = await api.get<Feed[]>("/feed");
     runInAction(() => {
       this.feeds = feeds;
-      const selected = this.feeds.find((x) => x.id === selectedId) || allFeed;
-      this.select(selected);
+      if (selectedId !== this.selectedFeed.id) {
+        const selected = this.feeds.find((x) => x.id === selectedId) || allFeed;
+        this.select(selected);
+      }
     });
   }
 

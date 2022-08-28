@@ -2,7 +2,6 @@ import { List, ListItem, Pagination } from "@mui/material";
 import { RssItemCard } from "components";
 import { observer } from "mobx-react-lite";
 import { useRootStore } from "store/RootStore";
-import { useEffect } from "react";
 
 export const RssList = observer(() => {
   const { rssItemStore, feedStore } = useRootStore();
@@ -18,12 +17,6 @@ export const RssList = observer(() => {
   const count = feedStore.selectedFeed
     ? rssItemStore.getCountByFeedId(feedStore.selectedFeed.id)
     : 0;
-
-  useEffect(() => {
-    if (feedStore.selectedFeed) {
-      rssItemStore.reload(feedStore.selectedFeed.id);
-    }
-  }, [rssItemStore, feedStore.selectedFeed]);
 
   const handleChange = (_: React.ChangeEvent<unknown>, value: number) => {
     if (feedStore.selectedFeed) {

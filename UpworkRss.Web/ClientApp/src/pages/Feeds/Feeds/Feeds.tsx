@@ -2,13 +2,15 @@ import {
   Box,
   Container,
   CssBaseline,
+  FormControlLabel,
   IconButton,
+  Switch,
   Toolbar,
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import Divider from "@mui/material/Divider";
 import { Drawer, Header, RssList, SavedSearches } from "./_components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
@@ -16,9 +18,11 @@ import { useRootStore } from "store/RootStore";
 import { observer } from "mobx-react-lite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { allFeed } from "store/Feed/FeedStore";
+import { reaction } from "mobx";
 
 export const Feeds = observer(() => {
   const [open, setOpen] = useState(true);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -37,6 +41,27 @@ export const Feeds = observer(() => {
   const handleDeleteFeedClick = () => {
     feedStore.delete();
   };
+
+  const handleShowReadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    rssItemStore.showRead = event.currentTarget.checked;
+  };
+
+  useEffect(
+    () =>
+      reaction(
+        () => rssItemStore.showRead,
+        () => {
+          rssItemStore.reload(feedStore.selectedFeed.id);
+        }
+      ),
+    [feedStore.selectedFeed.id, rssItemStore]
+  );
+
+  useEffect(() => {
+    if (feedStore.selectedFeed) {
+      rssItemStore.reload(feedStore.selectedFeed.id);
+    }
+  }, [rssItemStore, feedStore.selectedFeed]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -57,6 +82,16 @@ export const Feeds = observer(() => {
             <DeleteIcon style={{ color: "white" }} />
           </IconButton>
         )}
+        <FormControlLabel
+          control={
+            <Switch
+              checked={rssItemStore.showRead}
+              onChange={handleShowReadChange}
+              color="default"
+            />
+          }
+          label="Show read"
+        />
       </Header>
       <Drawer variant="permanent" open={open}>
         <Toolbar
