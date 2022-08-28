@@ -11,6 +11,7 @@ import { observer } from "mobx-react-lite";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 interface RssItemCardProps {
   item: RssItem;
@@ -23,6 +24,7 @@ export const RssItemCard = observer(
     const { rssItemStore, feedStore } = useRootStore();
     const ref = useRef<HTMLSpanElement | null>(null);
     const [copied, setCopied] = useState(false);
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     useEffect(() => {
       if (ref.current) {
@@ -30,8 +32,24 @@ export const RssItemCard = observer(
       }
     }, [item.summary]);
 
+    const handleCancelHideClick = async () => {
+      closeSnackbar(item.id);
+      await rssItemStore.hide(item, feedStore.selectedFeed.id);
+    }
+
     const handleHideClick = async () => {
       await rssItemStore.hide(item, feedStore.selectedFeed.id);
+      enqueueSnackbar("Post hidden", {
+        key: item.id,
+        variant: "success",
+        action: () => {
+          return (
+            <Button color="inherit" size="small" onClick={handleCancelHideClick}>
+              Cancel
+            </Button>
+          );
+        },
+      });
     };
 
     const handleReadClick = async () => {

@@ -64,7 +64,7 @@ public class RssItemService : IRssItemService
 
     public async Task Hide(RssItem item)
     {
-        item.Hidden = true;
+        item.Hidden = !item.Hidden;
         await _context.SaveChangesAsync();
     }
 

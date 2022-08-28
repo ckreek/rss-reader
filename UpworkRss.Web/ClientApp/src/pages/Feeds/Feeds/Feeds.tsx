@@ -18,7 +18,7 @@ import { useRootStore } from "store/RootStore";
 import { observer } from "mobx-react-lite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { allFeed } from "store/Feed/FeedStore";
-import { reaction } from "mobx";
+import { reaction, runInAction } from "mobx";
 import EditIcon from "@mui/icons-material/Edit";
 
 export const Feeds = observer(() => {
@@ -50,7 +50,9 @@ export const Feeds = observer(() => {
   };
 
   const handleShowReadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    rssItemStore.showRead = event.currentTarget.checked;
+    runInAction(() => {
+      rssItemStore.showRead = event.currentTarget.checked;
+    });
   };
 
   useEffect(
