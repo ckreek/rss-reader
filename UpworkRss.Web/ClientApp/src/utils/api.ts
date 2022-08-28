@@ -51,6 +51,17 @@ const patch = async <T>(url: string, data?: object) => {
   return (await parseResponse(response)) as T;
 };
 
+const put = async <T>(url: string, data?: object) => {
+  const response = await fetch(baseUrl + url, {
+    method: "PUT",
+    body: data && JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return (await parseResponse(response)) as T;
+};
+
 const del = async <T>(url: string) => {
   const response = await fetch(baseUrl + url, {
     method: "DELETE",
@@ -62,5 +73,6 @@ export const api = {
   get,
   post,
   patch,
+  put,
   del,
 };

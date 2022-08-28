@@ -19,6 +19,7 @@ import { observer } from "mobx-react-lite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { allFeed } from "store/Feed/FeedStore";
 import { reaction } from "mobx";
+import EditIcon from "@mui/icons-material/Edit";
 
 export const Feeds = observer(() => {
   const [open, setOpen] = useState(true);
@@ -36,6 +37,12 @@ export const Feeds = observer(() => {
 
   const handleAddFeedClick = () => {
     navigate("/feeds/create");
+  };
+
+  const handleEditFeedClick = () => {
+    if (feedStore.selectedFeed.id !== allFeed.id) {
+      navigate(`/feeds/${feedStore.selectedFeed.id}`);
+    }
   };
 
   const handleDeleteFeedClick = () => {
@@ -58,10 +65,8 @@ export const Feeds = observer(() => {
   );
 
   useEffect(() => {
-    if (feedStore.selectedFeed) {
-      rssItemStore.reload(feedStore.selectedFeed.id);
-    }
-  }, [rssItemStore, feedStore.selectedFeed]);
+    rssItemStore.reload(feedStore.selectedFeed.id);
+  }, [rssItemStore, feedStore.selectedFeed.id]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -74,6 +79,11 @@ export const Feeds = observer(() => {
         <IconButton onClick={handleRefreshClick}>
           <RefreshIcon style={{ color: "white" }} />
         </IconButton>
+        {feedStore.selectedFeed.id !== allFeed.id && (
+          <IconButton onClick={handleEditFeedClick}>
+            <EditIcon style={{ color: "white" }} />
+          </IconButton>
+        )}
         <IconButton onClick={handleAddFeedClick}>
           <AddIcon style={{ color: "white" }} />
         </IconButton>

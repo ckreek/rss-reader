@@ -8,11 +8,16 @@ import {
   Toolbar,
 } from "@mui/material";
 import { Header } from "components";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRootStore } from "store/RootStore";
 
-export const FeedsCreate = () => {
+interface FeedDetailsRouteParams {
+  feedId: string;
+}
+
+export const FeedDetails = () => {
+  const params = useParams<keyof FeedDetailsRouteParams>();
   const navigate = useNavigate();
   const { feedStore } = useRootStore();
   const [name, setName] = useState("");
@@ -24,18 +29,43 @@ export const FeedsCreate = () => {
     setUrl(event.currentTarget.value);
   };
 
+  const feedId = params.feedId
+    ? parseInt(params.feedId) || undefined
+    : undefined;
+  const feed = feedId !== undefined ? feedStore.getFeed(feedId) : undefined;
+
+  useEffect(() => {
+    if (feed) {
+      setName(feed.name);
+      setUrl(feed.url);
+    }
+  }, [feed]);
+
+  useEffect(() => {
+    if (feedId && !feed) {
+      // load
+    }
+  }, [feed, feedId]);
+
   const handleAddClick = async () => {
-    await feedStore.add({
-      name,
-      url,
-    });
+    if (feedId) {
+      await feedStore.update(feedId, {
+        name,
+        url,
+      });
+    } else {
+      await feedStore.add({
+        name,
+        url,
+      });
+    }
     navigate("/feeds");
   };
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Header title="Feed | Add" hasBack />
+      <Header title="Feed" hasBack />
       <Box
         component="main"
         sx={{
@@ -75,7 +105,7 @@ export const FeedsCreate = () => {
             </FormControl>
             <FormControl sx={{ m: 1, width: { xs: "100%", md: "50%" } }}>
               <Button variant="contained" onClick={handleAddClick}>
-                Add
+                Save
               </Button>
             </FormControl>
           </Box>

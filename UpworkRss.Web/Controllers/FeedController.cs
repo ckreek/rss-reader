@@ -33,11 +33,25 @@ public class FeedController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<FeedDto> Post(FeedCreateDto dto)
+    public async Task<FeedDto> Add(PostFeedDto dto)
     {
         var feed = _mapper.Map<Feed>(dto);
         feed = await _feedService.Add(feed);
         return _mapper.Map<FeedDto>(feed);
+    }
+
+    [HttpPut("{feedId}")]
+    public async Task<IActionResult> Update(long feedId, PostFeedDto dto)
+    {
+        var feed = await _feedService.Get(feedId);
+        if (feed == null)
+        {
+            return NotFound();
+        }
+
+        var newFeed = _mapper.Map(dto, feed);
+        newFeed = await _feedService.Update(newFeed);
+        return Ok(_mapper.Map<FeedDto>(newFeed));
     }
 
     [HttpDelete("{feedId}")]

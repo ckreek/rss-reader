@@ -7,7 +7,7 @@ export interface Feed {
   url: string;
 }
 
-interface FeedCreateDto {
+interface PostFeedDto {
   name: string;
   url: string;
 }
@@ -30,10 +30,8 @@ export class FeedStore {
     const feeds = await api.get<Feed[]>("/feed");
     runInAction(() => {
       this.feeds = feeds;
-      if (selectedId !== this.selectedFeed.id) {
-        const selected = this.feeds.find((x) => x.id === selectedId) || allFeed;
-        this.select(selected);
-      }
+      const selected = this.feeds.find((x) => x.id === selectedId) || allFeed;
+      this.select(selected);
     });
   }
 
@@ -41,8 +39,13 @@ export class FeedStore {
     this.selectedFeed = feed;
   }
 
-  async add(dto: FeedCreateDto) {
+  async add(dto: PostFeedDto) {
     const feed = await api.post<Feed>(`/feed`, dto);
+    await this.load(feed.id);
+  }
+
+  async update(feedId: number, dto: PostFeedDto) {
+    const feed = await api.put<Feed>(`/feed/${feedId}`, dto);
     await this.load(feed.id);
   }
 
@@ -51,5 +54,9 @@ export class FeedStore {
       await api.del(`/feed/${this.selectedFeed.id}`);
       await this.load();
     }
+  }
+
+  getFeed(feedId: number) {
+    return this.feeds.find((x) => x.id === feedId);
   }
 }
