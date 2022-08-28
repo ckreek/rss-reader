@@ -56,6 +56,13 @@ export class FeedStore {
     }
   }
 
+  async restore(feedId: number) {
+    if (feedId !== allFeed.id) {
+      await api.post(`/feed/${feedId}/restore`);
+      await this.load(feedId);
+    }
+  }
+
   getFeed(feedId: number) {
     return this.feeds.find((x) => x.id === feedId);
   }

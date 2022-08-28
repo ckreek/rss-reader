@@ -10,4 +10,5 @@ public interface IFeedService
     Task<Feed> Update(Feed feed);
     Task<Feed> Add(Feed feed);
     Task Delete(Feed feed);
+    Task Restore(Feed feed);
 }

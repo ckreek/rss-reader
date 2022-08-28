@@ -67,4 +67,18 @@ public class FeedController : ControllerBase
 
         return Ok();
     }
+
+    [HttpPost("{feedId}/restore")]
+    public async Task<IActionResult> Restore(long feedId)
+    {
+        var feed = await _feedService.Get(feedId);
+        if (feed == null)
+        {
+            return NotFound();
+        }
+
+        await _feedService.Restore(feed);
+
+        return Ok();
+    }
 }

@@ -22,7 +22,11 @@ public class FeedService : IFeedService
 
     public Task<List<Feed>> List()
     {
-        return _context.Feeds.AsNoTracking().OrderByDescending(x => x.CreatedOn).ToListAsync();
+        return _context.Feeds
+            .AsNoTracking()
+            .Where(x => !x.IsDeleted)
+            .OrderByDescending(x => x.CreatedOn)
+            .ToListAsync();
     }
 
     public async Task<Feed> Update(Feed feed)
@@ -41,7 +45,13 @@ public class FeedService : IFeedService
 
     public async Task Delete(Feed feed)
     {
-        _context.Feeds.Remove(feed);
-        await _context.SaveChangesAsync();
+        feed.IsDeleted = true;
+        await Update(feed);
+    }
+
+    public async Task Restore(Feed feed)
+    {
+        feed.IsDeleted = false;
+        await Update(feed);
     }
 }

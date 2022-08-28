@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   CssBaseline,
   FormControlLabel,
@@ -21,10 +22,12 @@ import { allFeed } from "store/Feed/FeedStore";
 import { reaction, runInAction } from "mobx";
 import EditIcon from "@mui/icons-material/Edit";
 import { useConfirmDialog } from "components";
+import { useSnackbar } from "notistack";
 
 export const Feeds = observer(() => {
   const [open, setOpen] = useState(true);
   const [openConfirmDeleteDialog, confirmDeleteDialog] = useConfirmDialog();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -47,12 +50,33 @@ export const Feeds = observer(() => {
     }
   };
 
+  const handleCancelDeleteClick = (feedId: number) => {
+    closeSnackbar(feedId);
+    feedStore.restore(feedId);
+  };
+
   const handleDeleteFeedClick = () => {
     openConfirmDeleteDialog({
       title: `Delete feed ${feedStore.selectedFeed.name}`,
       content: "Are you sure you want to delete this feed?",
-      onOk: () => {
-        feedStore.delete();
+      onOk: async () => {
+        const feedId = feedStore.selectedFeed.id;
+        await feedStore.delete();
+        enqueueSnackbar("Feed deleted", {
+          key: feedId,
+          variant: "success",
+          action: () => {
+            const handleClick = () => {
+              handleCancelDeleteClick(feedId);
+            };
+
+            return (
+              <Button color="inherit" size="small" onClick={handleClick}>
+                Cancel
+              </Button>
+            );
+          },
+        });
       },
     });
   };

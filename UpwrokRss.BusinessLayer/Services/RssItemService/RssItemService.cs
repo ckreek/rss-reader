@@ -76,13 +76,17 @@ public class RssItemService : IRssItemService
 
     private IQueryable<RssItem> QueryFeedItems(RssItemFilters filters)
     {
-        var query = _context.RssItems.Where(x => !x.Hidden);
+        var query = _context.RssItems
+            .Where(x => !x.Hidden)
+            .Where(x => !x.Feed.IsDeleted);
 
-        if (filters.FeedId > 0) {
+        if (filters.FeedId > 0)
+        {
             query = query.Where(x => x.FeedId == filters.FeedId);
         }
 
-        if (!filters.ShowRead) {
+        if (!filters.ShowRead)
+        {
             query = query.Where(x => !x.Read);
         }
 
