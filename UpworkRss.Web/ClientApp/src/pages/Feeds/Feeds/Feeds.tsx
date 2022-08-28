@@ -20,9 +20,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { allFeed } from "store/Feed/FeedStore";
 import { reaction, runInAction } from "mobx";
 import EditIcon from "@mui/icons-material/Edit";
+import { useConfirmDialog } from "components";
 
 export const Feeds = observer(() => {
   const [open, setOpen] = useState(true);
+  const [openConfirmDeleteDialog, confirmDeleteDialog] = useConfirmDialog();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -46,7 +48,13 @@ export const Feeds = observer(() => {
   };
 
   const handleDeleteFeedClick = () => {
-    feedStore.delete();
+    openConfirmDeleteDialog({
+      title: `Delete feed ${feedStore.selectedFeed.name}`,
+      content: "Are you sure you want to delete this feed?",
+      onOk: () => {
+        feedStore.delete();
+      },
+    });
   };
 
   const handleShowReadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,69 +79,72 @@ export const Feeds = observer(() => {
   }, [rssItemStore, feedStore.selectedFeed.id]);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Header
-        open={open}
-        toggleDrawer={toggleDrawer}
-        title={`Feed | ${feedStore.selectedFeed?.name}`}
-      >
-        <IconButton onClick={handleRefreshClick}>
-          <RefreshIcon style={{ color: "white" }} />
-        </IconButton>
-        {feedStore.selectedFeed.id !== allFeed.id && (
-          <IconButton onClick={handleEditFeedClick}>
-            <EditIcon style={{ color: "white" }} />
+    <>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <Header
+          open={open}
+          toggleDrawer={toggleDrawer}
+          title={`Feed | ${feedStore.selectedFeed?.name}`}
+        >
+          <IconButton onClick={handleRefreshClick}>
+            <RefreshIcon style={{ color: "white" }} />
           </IconButton>
-        )}
-        <IconButton onClick={handleAddFeedClick}>
-          <AddIcon style={{ color: "white" }} />
-        </IconButton>
-        {feedStore.selectedFeed.id !== allFeed.id && (
-          <IconButton onClick={handleDeleteFeedClick}>
-            <DeleteIcon style={{ color: "white" }} />
+          {feedStore.selectedFeed.id !== allFeed.id && (
+            <IconButton onClick={handleEditFeedClick}>
+              <EditIcon style={{ color: "white" }} />
+            </IconButton>
+          )}
+          <IconButton onClick={handleAddFeedClick}>
+            <AddIcon style={{ color: "white" }} />
           </IconButton>
-        )}
-        <FormControlLabel
-          control={
-            <Switch
-              checked={rssItemStore.showRead}
-              onChange={handleShowReadChange}
-              color="default"
-            />
-          }
-          label="Show read"
-        />
-      </Header>
-      <Drawer variant="permanent" open={open}>
-        <Toolbar
+          {feedStore.selectedFeed.id !== allFeed.id && (
+            <IconButton onClick={handleDeleteFeedClick}>
+              <DeleteIcon style={{ color: "white" }} />
+            </IconButton>
+          )}
+          <FormControlLabel
+            control={
+              <Switch
+                checked={rssItemStore.showRead}
+                onChange={handleShowReadChange}
+                color="default"
+              />
+            }
+            label="Show read"
+          />
+        </Header>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              px: [1],
+            }}
+          >
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <SavedSearches />
+        </Drawer>
+        <Box
+          component="main"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            px: [1],
+            backgroundColor: (theme) => theme.palette.grey[100],
+            flexGrow: 1,
+            minHeight: "100vh",
           }}
         >
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <SavedSearches />
-      </Drawer>
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: (theme) => theme.palette.grey[100],
-          flexGrow: 1,
-          minHeight: "100vh",
-        }}
-      >
-        <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <RssList />
-        </Container>
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <RssList />
+          </Container>
+        </Box>
       </Box>
-    </Box>
+      {confirmDeleteDialog}
+    </>
   );
 });
