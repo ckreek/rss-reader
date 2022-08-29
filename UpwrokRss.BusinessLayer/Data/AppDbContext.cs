@@ -47,14 +47,15 @@ public class AppDbContext : DbContext
         base.OnModelCreating(builder);
 
         builder.Entity<RssItem>()
-            .HasIndex(x => x.Url);
+            .HasIndex(x => x.Url)
+            .IsUnique();
 
         builder.Entity<RssItem>()
             .Property(x => x.PublishDate)
             .HasConversion(
                 x => x.ToString("yyyy-MM-ddThh:mm:ss%K")
-                // , x => DateTime.Parse(x, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
-                , x => DateTime.ParseExact(x, new [] {"yyyy-MM-ddThh:mm:ss%K", "yyyy-MM-dd hh:mm:ss"}, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
+                , x => DateTime.Parse(x, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
+                // , x => DateTime.ParseExact(x, new [] {"yyyy-MM-ddThh:mm:ss%K", "yyyy-MM-dd hh:mm:ss"}, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
             );
     }
 
