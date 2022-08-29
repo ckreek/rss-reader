@@ -14,7 +14,7 @@ import { Drawer, Header, RssList, SavedSearches } from "./_components";
 import { useEffect, useState } from "react";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRootStore } from "store/RootStore";
 import { observer } from "mobx-react-lite";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,20 +24,30 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useConfirmDialog } from "components";
 import { useSnackbar } from "notistack";
 
+interface FeedsRouteParams {
+  feedId?: string;
+}
+
 export const Feeds = observer(() => {
+  const { feedId } = useParams<keyof FeedsRouteParams>();
+  const selectedFeedId = feedId ? parseInt(feedId) || 0 : 0;
+
   const [open, setOpen] = useState(true);
   const [openConfirmDeleteDialog, confirmDeleteDialog] = useConfirmDialog();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { feedStore, rssItemStore } = useRootStore();
+  const navigate = useNavigate();
+
+  const feed = feedStore.getFeed(selectedFeedId);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const { feedStore, rssItemStore } = useRootStore();
-  const navigate = useNavigate();
-
   const handleRefreshClick = () => {
-    rssItemStore.setPage(feedStore.selectedFeed.id, 0);
+    if (feed) {
+      rssItemStore.setPage(feed.id, 0);
+    }
   };
 
   const handleAddFeedClick = () => {
@@ -45,8 +55,8 @@ export const Feeds = observer(() => {
   };
 
   const handleEditFeedClick = () => {
-    if (feedStore.selectedFeed.id !== allFeed.id) {
-      navigate(`/feeds/${feedStore.selectedFeed.id}`);
+    if (feed && feed.id !== allFeed.id) {
+      navigate(`/feeds/${feed.id}/edit`);
     }
   };
 
@@ -56,29 +66,32 @@ export const Feeds = observer(() => {
   };
 
   const handleDeleteFeedClick = () => {
-    openConfirmDeleteDialog({
-      title: `Delete feed ${feedStore.selectedFeed.name}`,
-      content: "Are you sure you want to delete this feed?",
-      onOk: async () => {
-        const feedId = feedStore.selectedFeed.id;
-        await feedStore.delete();
-        enqueueSnackbar("Feed deleted", {
-          key: feedId,
-          variant: "success",
-          action: () => {
-            const handleClick = () => {
-              handleCancelDeleteClick(feedId);
-            };
+    if (feed) {
+      openConfirmDeleteDialog({
+        title: `Delete feed ${feed.name}`,
+        content: "Are you sure you want to delete this feed?",
+        onOk: async () => {
+          const feedId = feed.id;
+          await feedStore.delete(feedId);
+          navigate(`/feeds/${allFeed.id}`)
+          enqueueSnackbar("Feed deleted", {
+            key: feedId,
+            variant: "success",
+            action: () => {
+              const handleClick = () => {
+                handleCancelDeleteClick(feedId);
+              };
 
-            return (
-              <Button color="inherit" size="small" onClick={handleClick}>
-                Cancel
-              </Button>
-            );
-          },
-        });
-      },
-    });
+              return (
+                <Button color="inherit" size="small" onClick={handleClick}>
+                  Cancel
+                </Button>
+              );
+            },
+          });
+        },
+      });
+    }
   };
 
   const handleShowReadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,15 +105,17 @@ export const Feeds = observer(() => {
       reaction(
         () => rssItemStore.showRead,
         () => {
-          rssItemStore.reload(feedStore.selectedFeed.id);
+          rssItemStore.reload(selectedFeedId);
         }
       ),
-    [feedStore.selectedFeed.id, rssItemStore]
+    [selectedFeedId, rssItemStore]
   );
 
   useEffect(() => {
-    rssItemStore.reload(feedStore.selectedFeed.id);
-  }, [rssItemStore, feedStore.selectedFeed.id]);
+    if (selectedFeedId !== undefined) {
+      rssItemStore.reload(selectedFeedId);
+    }
+  }, [rssItemStore, selectedFeedId]);
 
   return (
     <>
@@ -109,12 +124,12 @@ export const Feeds = observer(() => {
         <Header
           open={open}
           toggleDrawer={toggleDrawer}
-          title={`Feed | ${feedStore.selectedFeed?.name}`}
+          title={`Feed | ${feed?.name}`}
         >
           <IconButton onClick={handleRefreshClick}>
             <RefreshIcon style={{ color: "white" }} />
           </IconButton>
-          {feedStore.selectedFeed.id !== allFeed.id && (
+          {feed && feed.id !== allFeed.id && (
             <IconButton onClick={handleEditFeedClick}>
               <EditIcon style={{ color: "white" }} />
             </IconButton>
@@ -122,7 +137,7 @@ export const Feeds = observer(() => {
           <IconButton onClick={handleAddFeedClick}>
             <AddIcon style={{ color: "white" }} />
           </IconButton>
-          {feedStore.selectedFeed.id !== allFeed.id && (
+          {feed && feed.id !== allFeed.id && (
             <IconButton onClick={handleDeleteFeedClick}>
               <DeleteIcon style={{ color: "white" }} />
             </IconButton>
@@ -164,7 +179,7 @@ export const Feeds = observer(() => {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <RssList />
+            <RssList feedId={selectedFeedId} />
           </Container>
         </Box>
       </Box>

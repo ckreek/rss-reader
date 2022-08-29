@@ -19,8 +19,6 @@ export const Posts = observer(() => {
       ? rssItemStore.getItem(parseInt(params.feedId), parseInt(params.postId))
       : undefined;
 
-  console.log(item);
-
   useEffect(() => {
     if (!item) {
       // load
@@ -52,7 +50,7 @@ export const Posts = observer(() => {
               flexDirection: "column",
             }}
           >
-            {item && <RssItemCard item={item} />}
+            {item && <RssItemCard item={item} feedId={item.feedId} />}
           </Box>
         </Container>
       </Box>

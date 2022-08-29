@@ -3,24 +3,22 @@ import { observer } from "mobx-react-lite";
 import { useRootStore } from "store/RootStore";
 import { RssItemCardListItem } from "./RssItemCardListItem";
 
-export const RssList = observer(() => {
-  const { rssItemStore, feedStore } = useRootStore();
+interface RssListProps {
+  feedId: number;
+}
 
-  const items = feedStore.selectedFeed
-    ? rssItemStore.getItemsByFeedId(feedStore.selectedFeed.id)
-    : [];
+export const RssList = observer(({ feedId }: RssListProps) => {
+  const { rssItemStore } = useRootStore();
 
-  const page = feedStore.selectedFeed
-    ? rssItemStore.getPageByFeedId(feedStore.selectedFeed.id)
-    : 0;
+  const items = feedId !== undefined ? rssItemStore.getItemsByFeedId(feedId) : [];
 
-  const count = feedStore.selectedFeed
-    ? rssItemStore.getCountByFeedId(feedStore.selectedFeed.id)
-    : 0;
+  const page = feedId !== undefined ? rssItemStore.getPageByFeedId(feedId) : 0;
+
+  const count = feedId !== undefined ? rssItemStore.getCountByFeedId(feedId) : 0;
 
   const handleChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    if (feedStore.selectedFeed) {
-      rssItemStore.setPage(feedStore.selectedFeed.id, value);
+    if (feedId) {
+      rssItemStore.setPage(feedId, value);
     }
   };
 
@@ -28,7 +26,7 @@ export const RssList = observer(() => {
     <>
       <List>
         {items.map((x) => (
-          <RssItemCardListItem key={x.id} item={x} />
+          <RssItemCardListItem key={x.id} item={x} feedId={feedId} />
         ))}
       </List>
       <Pagination

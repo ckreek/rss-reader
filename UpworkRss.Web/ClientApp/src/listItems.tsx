@@ -5,6 +5,7 @@ import ListItemText from "@mui/material/ListItemText";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Feed } from "store/Feed/FeedStore";
 import { useRootStore } from "store/RootStore";
+import { useNavigate } from "react-router-dom";
 
 interface DrawerListItemProps {
   feed: Feed;
@@ -12,8 +13,9 @@ interface DrawerListItemProps {
 
 export const DrawerListItem = ({ feed }: DrawerListItemProps) => {
   const { feedStore } = useRootStore();
+  const navigate = useNavigate();
   const handleClick = () => {
-    feedStore.select(feed);
+    navigate(`/feeds/${feed.id}`)
   };
 
   return (

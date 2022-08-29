@@ -5,9 +5,13 @@ import { RssItem } from "store/RssItem/RssItemStore";
 
 interface RssItemCardListItemProps {
   item: RssItem;
+  feedId: number;
 }
 
-export const RssItemCardListItem = ({ item }: RssItemCardListItemProps) => {
+export const RssItemCardListItem = ({
+  item,
+  feedId,
+}: RssItemCardListItemProps) => {
   const ref = useRef<HTMLLIElement | null>(null);
 
   const handleGoToNext = async () => {
@@ -17,7 +21,7 @@ export const RssItemCardListItem = ({ item }: RssItemCardListItemProps) => {
   };
   return (
     <ListItem ref={ref}>
-      <RssItemCard item={item} onGoToNext={handleGoToNext} />
+      <RssItemCard item={item} onGoToNext={handleGoToNext} feedId={feedId} />
     </ListItem>
   );
 };

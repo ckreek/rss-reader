@@ -14,14 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 interface RssItemCardProps {
+  feedId: number;
   item: RssItem;
   onGoToNext?: () => {};
 }
 
 export const RssItemCard = observer(
-  ({ item, onGoToNext }: RssItemCardProps) => {
+  ({ item, onGoToNext, feedId }: RssItemCardProps) => {
     const navigate = useNavigate();
-    const { rssItemStore, feedStore } = useRootStore();
+    const { rssItemStore } = useRootStore();
     const ref = useRef<HTMLSpanElement | null>(null);
     const [copied, setCopied] = useState(false);
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -34,11 +35,11 @@ export const RssItemCard = observer(
 
     const handleCancelHideClick = async () => {
       closeSnackbar(item.id);
-      await rssItemStore.hide(item, feedStore.selectedFeed.id);
+      await rssItemStore.hide(item, feedId);
     }
 
     const handleHideClick = async () => {
-      await rssItemStore.hide(item, feedStore.selectedFeed.id);
+      await rssItemStore.hide(item, feedId);
       enqueueSnackbar("Post hidden", {
         key: item.id,
         variant: "success",
@@ -62,7 +63,7 @@ export const RssItemCard = observer(
     };
 
     const handleViewClick = async () => {
-      navigate(`/feeds/${feedStore.selectedFeed.id}/posts/${item.id}`);
+      navigate(`/feeds/${feedId}/posts/${item.id}`);
     };
 
     const handleGoToNextClick = async () => {

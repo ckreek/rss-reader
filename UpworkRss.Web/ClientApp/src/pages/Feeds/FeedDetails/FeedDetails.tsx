@@ -53,13 +53,14 @@ export const FeedDetails = () => {
         name,
         url,
       });
+      navigate(`/feeds/${feedId}`);
     } else {
-      await feedStore.add({
+      const newFeed = await feedStore.add({
         name,
         url,
       });
+      navigate(`/feeds/${newFeed.id}`);
     }
-    navigate("/feeds");
   };
 
   return (

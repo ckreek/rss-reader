@@ -20,38 +20,32 @@ export const allFeed: Feed = {
 
 export class FeedStore {
   feeds: Feed[] = [];
-  selectedFeed: Feed = allFeed;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  async load(selectedId: number = allFeed.id) {
+  async load() {
     const feeds = await api.get<Feed[]>("/feed");
     runInAction(() => {
       this.feeds = feeds;
-      const selected = this.feeds.find((x) => x.id === selectedId) || allFeed;
-      this.select(selected);
     });
-  }
-
-  select(feed: Feed) {
-    this.selectedFeed = feed;
   }
 
   async add(dto: PostFeedDto) {
     const feed = await api.post<Feed>(`/feed`, dto);
-    await this.load(feed.id);
+    await this.load();
+    return feed;
   }
 
   async update(feedId: number, dto: PostFeedDto) {
-    const feed = await api.put<Feed>(`/feed/${feedId}`, dto);
-    await this.load(feed.id);
+    await api.put<Feed>(`/feed/${feedId}`, dto);
+    await this.load();
   }
 
-  async delete() {
-    if (this.selectedFeed.id !== allFeed.id) {
-      await api.del(`/feed/${this.selectedFeed.id}`);
+  async delete(feedId: number) {
+    if (feedId !== allFeed.id) {
+      await api.del(`/feed/${feedId}`);
       await this.load();
     }
   }
@@ -59,11 +53,14 @@ export class FeedStore {
   async restore(feedId: number) {
     if (feedId !== allFeed.id) {
       await api.post(`/feed/${feedId}/restore`);
-      await this.load(feedId);
+      await this.load();
     }
   }
 
   getFeed(feedId: number) {
+    if (feedId === 0) {
+      return allFeed;
+    }
     return this.feeds.find((x) => x.id === feedId);
   }
 }

@@ -7,9 +7,12 @@ const App = () => {
     <SnackbarProvider maxSnack={3}>
       <BrowserRouter>
         <Routes>
-          <Route path="/feeds" element={<Feeds />} />
+          <Route path="/feeds">
+            <Route path="" element={<Feeds />} />
+            <Route path=":feedId" element={<Feeds />} />
+          </Route>
           <Route path="/feeds/create" element={<FeedDetails />} />
-          <Route path="/feeds/:feedId" element={<FeedDetails />} />
+          <Route path="/feeds/:feedId/edit" element={<FeedDetails />} />
           <Route path="/feeds/:feedId/posts/:postId" element={<Posts />} />
           <Route path="*" element={<Navigate to="/feeds" replace />} />
         </Routes>
