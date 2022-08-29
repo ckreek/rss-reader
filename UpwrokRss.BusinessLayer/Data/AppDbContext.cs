@@ -52,9 +52,9 @@ public class AppDbContext : DbContext
         builder.Entity<RssItem>()
             .Property(x => x.PublishDate)
             .HasConversion(
-                x => x.ToString("yyyy-dd-MMThh:mm:ss %K")
-                , x => DateTime.Parse(x, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
-                // , x => DateTime.ParseExact(x, new [] {"yyyy-MM-ddThh:mm:ss %K", "yyyy-MM-dd hh:mm:ss"}, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
+                x => x.ToString("yyyy-MM-ddThh:mm:ss%K")
+                // , x => DateTime.Parse(x, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
+                , x => DateTime.ParseExact(x, new [] {"yyyy-MM-ddThh:mm:ss%K", "yyyy-MM-dd hh:mm:ss"}, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)
             );
     }
 
