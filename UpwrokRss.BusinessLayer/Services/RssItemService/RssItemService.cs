@@ -19,7 +19,7 @@ public class RssItemService : IRssItemService
     {
         var urls = items.Select(x => x.Url);
         var uploadedUrls = await _context.RssItems.AsNoTracking()
-            .Where(x => x.FeedId == feedId && urls.Contains(x.Url))
+            .Where(x => urls.Contains(x.Url))
             .Select(x => x.Url)
             .ToListAsync();
         var notUploaded = items.Where(x => !uploadedUrls.Contains(x.Url)).ToList();
