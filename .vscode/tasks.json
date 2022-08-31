@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/UpworkRss.Background/UpworkRss.Background.csproj",
+                "${workspaceFolder}/LightRssReader.Background/LightRssReader.Background.csproj",
             ],
             "problemMatcher": "$msCompile"
         },
@@ -17,7 +17,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/UpworkRss.Background/UpworkRss.Background.csproj",
+                "${workspaceFolder}/LightRssReader.Background/LightRssReader.Background.csproj",
                 "-r",
                 "osx-x64",
                 "--no-self-contained",
@@ -32,7 +32,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/UpworkRss.Web/UpworkRss.Web.csproj",
+                "${workspaceFolder}/LightRssReader.Web/LightRssReader.Web.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -44,7 +44,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/UpworkRss.Web/UpworkRss.Web.csproj",
+                "${workspaceFolder}/LightRssReader.Web/LightRssReader.Web.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary",
                 "-r",
@@ -63,7 +63,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/UpworkRss.Web.csproj"
+                "${workspaceFolder}/LightRssReader.Web.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

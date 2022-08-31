@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build: Background",
-            "program": "${workspaceFolder}/UpworkRss.Background/bin/Debug/net6.0/UpworkRss.Background.dll",
+            "program": "${workspaceFolder}/LightRssReader.Background/bin/Debug/net6.0/LightRssReader.Background.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
@@ -21,9 +21,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/UpworkRss.Web/bin/Debug/net6.0/UpworkRss.Web.dll",
+            "program": "${workspaceFolder}/LightRssReader.Web/bin/Debug/net6.0/LightRssReader.Web.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/UpworkRss.Web",
+            "cwd": "${workspaceFolder}/LightRssReader.Web",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
@@ -34,7 +34,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/UpworkRss.Web/Views"
+                "/Views": "${workspaceFolder}/LightRssReader.Web/Views"
             }
         },
         {

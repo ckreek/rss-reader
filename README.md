@@ -1,11 +1,11 @@
-# rss-reader
-Simple RSS client
+# Light RSS Reader
+RSS client with simple and clean UI
 
-## UpworkRss.Web
+## LightRssReader.Web
 ASP.NET Core API + SPA with React.JS and MobX
 
-## UpworkRss.BusinessLayer
+## LightRssReader.BusinessLayer
 Services and DB layers: EF Core and SQLite
 
-## UpworkRss.Background
-Simple console app to fetch new posts every 3 mins.
+## LightRssReader.Background
+Console app to fetch new posts every 3 mins.
