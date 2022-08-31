@@ -1,17 +1,17 @@
 import { ListItem } from "@mui/material";
-import { RssItemCard } from "components";
+import { RssPostCard } from "components";
 import { useRef } from "react";
-import { RssItem } from "store/RssItem/RssItemStore";
+import { RssPost } from "store/RssPost/RssPostStore";
 
-interface RssItemCardListItemProps {
-  item: RssItem;
+interface RssPostCardListItemProps {
+  item: RssPost;
   feedId: number;
 }
 
-export const RssItemCardListItem = ({
+export const RssPostCardListItem = ({
   item,
   feedId,
-}: RssItemCardListItemProps) => {
+}: RssPostCardListItemProps) => {
   const ref = useRef<HTMLLIElement | null>(null);
 
   const handleGoToNext = async () => {
@@ -21,7 +21,7 @@ export const RssItemCardListItem = ({
   };
   return (
     <ListItem ref={ref}>
-      <RssItemCard item={item} onGoToNext={handleGoToNext} feedId={feedId} />
+      <RssPostCard item={item} onGoToNext={handleGoToNext} feedId={feedId} />
     </ListItem>
   );
 };

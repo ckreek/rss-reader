@@ -1,6 +1,6 @@
 namespace LightRssReader.Web.Dto;
 
-public class RssItemDto
+public class RssPostDto
 {
   public long Id { get; set; }
   public string Title { get; set; } = default!;

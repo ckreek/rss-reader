@@ -9,7 +9,7 @@ public static class ServiceConfigurator
     public static void ConfigureServices(this IServiceCollection services)
     {
         services.AddScoped<RssClient>();
-        services.AddScoped<IRssItemService, RssItemService>();
+        services.AddScoped<IRssPostService, RssPostService>();
         services.AddScoped<IFeedService, FeedService>();
     }
 

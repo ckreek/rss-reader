@@ -1,5 +1,5 @@
 import { Box, Container, CssBaseline, Toolbar } from "@mui/material";
-import { Header, RssItemCard } from "components";
+import { Header, RssPostCard } from "components";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -12,11 +12,11 @@ interface PostsRouteParams {
 
 export const Posts = observer(() => {
   const params = useParams<keyof PostsRouteParams>();
-  const { rssItemStore } = useRootStore();
+  const { rssPostStore } = useRootStore();
 
   const item =
     params.feedId !== undefined && params.postId !== undefined
-      ? rssItemStore.getItem(parseInt(params.feedId), parseInt(params.postId))
+      ? rssPostStore.getItem(parseInt(params.feedId), parseInt(params.postId))
       : undefined;
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const Posts = observer(() => {
               flexDirection: "column",
             }}
           >
-            {item && <RssItemCard item={item} feedId={item.feedId} />}
+            {item && <RssPostCard item={item} feedId={item.feedId} />}
           </Box>
         </Container>
       </Box>

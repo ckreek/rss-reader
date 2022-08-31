@@ -1,7 +1,7 @@
 
 namespace LightRssReader.BusinessLayer.Entities;
 
-public class RssItem : BaseEntity
+public class RssPost : BaseEntity
 {
     public string Title { get; set; } = default!;
     public string Summary { get; set; } = default!;

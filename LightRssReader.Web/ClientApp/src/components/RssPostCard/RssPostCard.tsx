@@ -1,28 +1,28 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { RssItem } from "store/RssItem/RssItemStore";
+import { RssPost } from "store/RssPost/RssPostStore";
 import { useEffect, useRef, useState } from "react";
 import { Box, Button } from "@mui/material";
 import { formatDate } from "utils";
 import { useRootStore } from "store/RootStore";
-import styles from "./RssItemCard.module.scss";
+import styles from "./RssPostCard.module.scss";
 import { observer } from "mobx-react-lite";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
-interface RssItemCardProps {
+interface RssPostCardProps {
   feedId: number;
-  item: RssItem;
+  item: RssPost;
   onGoToNext?: () => {};
 }
 
-export const RssItemCard = observer(
-  ({ item, onGoToNext, feedId }: RssItemCardProps) => {
+export const RssPostCard = observer(
+  ({ item, onGoToNext, feedId }: RssPostCardProps) => {
     const navigate = useNavigate();
-    const { rssItemStore } = useRootStore();
+    const { rssPostStore } = useRootStore();
     const ref = useRef<HTMLSpanElement | null>(null);
     const [copied, setCopied] = useState(false);
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -35,11 +35,11 @@ export const RssItemCard = observer(
 
     const handleCancelHideClick = async () => {
       closeSnackbar(item.id);
-      await rssItemStore.hide(item, feedId);
+      await rssPostStore.hide(item, feedId);
     }
 
     const handleHideClick = async () => {
-      await rssItemStore.hide(item, feedId);
+      await rssPostStore.hide(item, feedId);
       enqueueSnackbar("Post hidden", {
         key: item.id,
         variant: "success",
@@ -54,7 +54,7 @@ export const RssItemCard = observer(
     };
 
     const handleReadClick = async () => {
-      await rssItemStore.read(item);
+      await rssPostStore.read(item);
     };
 
     const handleCopyUrlClick = async () => {

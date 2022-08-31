@@ -8,21 +8,21 @@ namespace LightRssReader.Background;
 public class ReadRssJob
 {
     private readonly IMapper _mapper;
-    private readonly IRssItemService _rssItemService;
+    private readonly IRssPostService _rssPostService;
     private readonly IFeedService _feedService;
     private readonly RssClient _rssClient;
     private readonly ILogger _logger;
 
     public ReadRssJob(
         IMapper mapper,
-        IRssItemService rssItemService,
+        IRssPostService rssPostService,
         IFeedService feedService,
         RssClient rssClient,
         ILoggerFactory loggerFactory
     )
     {
         _mapper = mapper;
-        _rssItemService = rssItemService;
+        _rssPostService = rssPostService;
         _feedService = feedService;
         _rssClient = rssClient;
         _logger = loggerFactory.CreateLogger("Read RSS");
@@ -35,9 +35,9 @@ public class ReadRssJob
         foreach (var feed in feeds)
         {
             var newItems = _rssClient.GetItems(feed.Url);
-            var mappedItems = newItems.Select(_mapper.Map<RssItem>);
+            var mappedItems = newItems.Select(_mapper.Map<RssPost>);
 
-            var newItemsCount = await _rssItemService.SaveNewItems(feed.Id, mappedItems);
+            var newItemsCount = await _rssPostService.SaveNewItems(feed.Id, mappedItems);
             _logger.LogTrace($"{feed.Name} posts found: {newItemsCount}{System.Environment.NewLine}");
             await _feedService.Update(feed);
         }

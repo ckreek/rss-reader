@@ -35,11 +35,11 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<RssItem>()
+        builder.Entity<RssPost>()
             .HasIndex(x => x.Url)
             .IsUnique();
 
-        builder.Entity<RssItem>()
+        builder.Entity<RssPost>()
             .Property(x => x.PublishDate)
             .HasConversion(
                 x => x.ToString("yyyy-MM-ddThh:mm:ss%K")
@@ -48,7 +48,7 @@ public class AppDbContext : DbContext
             );
     }
 
-    public DbSet<RssItem> RssItems { get; set; } = default!;
+    public DbSet<RssPost> RssPosts { get; set; } = default!;
 
     public DbSet<Feed> Feeds { get; set; } = default!;
 }

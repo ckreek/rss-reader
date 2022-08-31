@@ -35,7 +35,7 @@ export const Feeds = observer(() => {
   const [open, setOpen] = useState(true);
   const [openConfirmDeleteDialog, confirmDeleteDialog] = useConfirmDialog();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { feedStore, rssItemStore } = useRootStore();
+  const { feedStore, rssPostStore } = useRootStore();
   const navigate = useNavigate();
 
   const feed = feedStore.getFeed(selectedFeedId);
@@ -46,7 +46,7 @@ export const Feeds = observer(() => {
 
   const handleRefreshClick = () => {
     if (feed) {
-      rssItemStore.setPage(feed.id, 0);
+      rssPostStore.setPage(feed.id, 0);
     }
   };
 
@@ -96,26 +96,26 @@ export const Feeds = observer(() => {
 
   const handleShowReadChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     runInAction(() => {
-      rssItemStore.showRead = event.currentTarget.checked;
+      rssPostStore.showRead = event.currentTarget.checked;
     });
   };
 
   useEffect(
     () =>
       reaction(
-        () => rssItemStore.showRead,
+        () => rssPostStore.showRead,
         () => {
-          rssItemStore.reload(selectedFeedId);
+          rssPostStore.reload(selectedFeedId);
         }
       ),
-    [selectedFeedId, rssItemStore]
+    [selectedFeedId, rssPostStore]
   );
 
   useEffect(() => {
     if (selectedFeedId !== undefined) {
-      rssItemStore.reload(selectedFeedId);
+      rssPostStore.reload(selectedFeedId);
     }
-  }, [rssItemStore, selectedFeedId]);
+  }, [rssPostStore, selectedFeedId]);
 
   return (
     <>
@@ -145,7 +145,7 @@ export const Feeds = observer(() => {
           <FormControlLabel
             control={
               <Switch
-                checked={rssItemStore.showRead}
+                checked={rssPostStore.showRead}
                 onChange={handleShowReadChange}
                 color="default"
               />

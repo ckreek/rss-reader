@@ -2,21 +2,21 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { ListResult } from "store/types/Common";
 import { api } from "utils";
 
-interface RssItemFilters {
+interface RssPostFilters {
   feedId: number;
   page: number;
   showRead: boolean;
 }
 
-type RssItemsByFeedId = {
-  [feedId: number]: RssItem[] | undefined;
+type RssPostsByFeedId = {
+  [feedId: number]: RssPost[] | undefined;
 };
 type NumberByFeedId = {
   [feedId: number]: number | undefined;
 };
 
-export class RssItemStore {
-  itemsByFeedId: RssItemsByFeedId = {};
+export class RssPostStore {
+  itemsByFeedId: RssPostsByFeedId = {};
   pageByFeedId: NumberByFeedId = {};
   totalByFeedId: NumberByFeedId = {};
   loading = false;
@@ -29,7 +29,7 @@ export class RssItemStore {
   async load(feedId: number) {
     this.loading = true;
     const page = this.getPageByFeedId(feedId) - 1;
-    const result = await api.get<ListResult<RssItem>, RssItemFilters>(`/rss`, {
+    const result = await api.get<ListResult<RssPost>, RssPostFilters>(`/rss`, {
       feedId,
       page,
       showRead: this.showRead,
@@ -46,12 +46,12 @@ export class RssItemStore {
     this.load(feedId);
   }
 
-  async hide(item: RssItem, feedId: number) {
+  async hide(item: RssPost, feedId: number) {
     await api.patch(`/rss/${item.id}/hide`);
     await this.load(feedId);
   }
 
-  async read(item: RssItem) {
+  async read(item: RssPost) {
     item.read = !item.read;
     await api.patch(`/rss/${item.id}/read`);
   }
@@ -87,7 +87,7 @@ export class RssItemStore {
   }
 }
 
-export interface RssItem {
+export interface RssPost {
   id: number;
   title: string;
   summary: string;

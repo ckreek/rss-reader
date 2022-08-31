@@ -24,7 +24,7 @@ public class WebMapperProfile : Profile
 {
     public WebMapperProfile()
     {
-        CreateMap<RssItem, RssItemDto>();
+        CreateMap<RssPost, RssPostDto>();
         CreateMap<Feed, FeedDto>();
         CreateMap<PostFeedDto, Feed>();
     }

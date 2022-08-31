@@ -12,24 +12,24 @@ public class RssController : ControllerBase
 {
     private readonly ILogger<RssController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRssItemService _rssItemService;
+    private readonly IRssPostService _rssPostService;
     private readonly IFeedService _feedService;
 
     public RssController(
       ILogger<RssController> logger,
       IMapper mapper,
-      IRssItemService rssItemService,
+      IRssPostService rssPostService,
       IFeedService feedService
       )
     {
         _logger = logger;
         _mapper = mapper;
-        _rssItemService = rssItemService;
+        _rssPostService = rssPostService;
         _feedService = feedService;
     }
 
     [HttpGet]
-    public async Task<IActionResult> List([FromQuery] RssItemFilters filters)
+    public async Task<IActionResult> List([FromQuery] RssPostFilters filters)
     {
         if (filters.FeedId > 0)
         {
@@ -40,25 +40,25 @@ public class RssController : ControllerBase
             }
         }
 
-        var items = await _rssItemService.List(filters);
-        var total = await _rssItemService.Count(filters);
-        return Ok(new ListResult<RssItemDto>
+        var items = await _rssPostService.List(filters);
+        var total = await _rssPostService.Count(filters);
+        return Ok(new ListResult<RssPostDto>
         {
             Total = total,
-            List = items.Select(_mapper.Map<RssItemDto>),
+            List = items.Select(_mapper.Map<RssPostDto>),
         });
     }
 
     [HttpPatch("{id}/hide")]
     public async Task<IActionResult> Hide(long id)
     {
-        var item = await _rssItemService.Get(id);
+        var item = await _rssPostService.Get(id);
         if (item == null)
         {
             return NotFound();
         }
 
-        await _rssItemService.Hide(item);
+        await _rssPostService.Hide(item);
 
         return Ok();
     }
@@ -66,13 +66,13 @@ public class RssController : ControllerBase
     [HttpPatch("{id}/read")]
     public async Task<IActionResult> Read(long id)
     {
-        var item = await _rssItemService.Get(id);
+        var item = await _rssPostService.Get(id);
         if (item == null)
         {
             return NotFound();
         }
 
-        await _rssItemService.Read(item);
+        await _rssPostService.Read(item);
 
         return Ok();
     }
