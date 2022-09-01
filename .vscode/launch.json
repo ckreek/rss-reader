@@ -7,7 +7,9 @@
             "request": "launch",
             "preLaunchTask": "Build: Background",
             "program": "${workspaceFolder}/LightRssReader.Background/bin/Debug/net6.0/LightRssReader.Background.dll",
-            "args": [],
+            "args": [
+                "Development"
+            ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"

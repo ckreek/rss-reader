@@ -5,6 +5,9 @@ using LightRssReader.Web.Configurations;
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+configuration.ConfigureAppSettings(builder.Environment.EnvironmentName);
 
 // Add services to the container.
 
@@ -21,7 +24,7 @@ builder.Services.AddCors(options =>
                         });
 });
 
-builder.Services.ConfigureDb(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.ConfigureDb(configuration.GetConnectionString("DefaultConnection"));
 builder.Services.ConfigureServices();
 builder.Services.ConfigureMapper();
 

@@ -3,11 +3,20 @@ using Microsoft.Extensions.Logging;
 using LightRssReader.Background;
 using LightRssReader.Background.Configurations;
 using LightRssReader.BusinessLayer.Configurations;
+using Microsoft.Extensions.Configuration;
+
+var builder = new ConfigurationBuilder();
+var environmentName = args.Length > 0 ? args[0] : null;
+if (!string.IsNullOrEmpty(environmentName))
+{
+    builder.ConfigureAppSettings(environmentName);
+}
+var configuration = builder.Build();
 
 var services = new ServiceCollection();
 
 services.AddScoped<ReadRssJob>();
-services.ConfigureDb("upwork-rss.db");
+services.ConfigureDb(configuration.GetConnectionString("DefaultConnection"));
 services.ConfigureServices();
 services.ConfigureMapper();
 
