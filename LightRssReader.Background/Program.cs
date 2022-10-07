@@ -36,13 +36,24 @@ services.AddLogging(configure => configure
 
 var serviceProvider = services.BuildServiceProvider();
 
-while (true)
+var errorCounter = 0;
+while (true && errorCounter < 3)
 {
     using var scope = serviceProvider.CreateScope();
 
     var readRssJob = scope.ServiceProvider.GetRequiredService<ReadRssJob>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-    await readRssJob.Execute();
+    try
+    {
+        await readRssJob.Execute();
+        errorCounter = 0;
+    }
+    catch (Exception e)
+    {
+        logger.LogError(e, "ReadRssJob failed");
+        errorCounter += 1;
+    }
 
     await Task.Delay(1000 * 60 * 3);
 }
