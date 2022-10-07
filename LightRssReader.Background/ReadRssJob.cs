@@ -37,16 +37,16 @@ public class ReadRssJob
         var feeds = await _feedService.List();
         foreach (var feed in feeds)
         {
-            var newItems = _rssClient.GetItems(feed.Url);
-            var mappedItems = newItems.Select(_mapper.Map<RssPost>);
+            var newRssPosts = _rssClient.GetRssPosts(feed.Url);
+            var mappedRssPosts = newRssPosts.Select(_mapper.Map<RssPost>);
 
-            var newItemsCount = await _rssPostService.SaveNewItems(feed.Id, mappedItems);
+            var newRssPostsCount = await _rssPostService.SaveNewRssPosts(feed.Id, mappedRssPosts);
             await _feedService.Update(feed);
 
-            var logMessage = $"{feed.Name} posts found: {newItemsCount}{System.Environment.NewLine}";
+            var logMessage = $"{feed.Name} posts found: {newRssPostsCount}{System.Environment.NewLine}";
             _logger.LogTrace(logMessage);
 
-            if (newItemsCount > 0) {
+            if (newRssPostsCount > 0) {
                 await _telegramClient.SendMessage(logMessage);
             }
         }

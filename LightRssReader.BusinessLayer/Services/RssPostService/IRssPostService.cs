@@ -4,10 +4,10 @@ namespace LightRssReader.BusinessLayer.Services;
 
 public interface IRssPostService
 {
-    Task<int> SaveNewItems(long feedId, IEnumerable<RssPost> items);
+    Task<int> SaveNewRssPosts(long feedId, IEnumerable<RssPost> rssPosts);
     Task<List<RssPost>> List(RssPostFilters filters);
     Task<int> Count(RssPostFilters filters);
     Task<RssPost?> Get(long id);
-    Task Hide(RssPost item);
-    Task Read(RssPost item);
+    Task Hide(RssPost rssPost);
+    Task Read(RssPost rssPost);
 }

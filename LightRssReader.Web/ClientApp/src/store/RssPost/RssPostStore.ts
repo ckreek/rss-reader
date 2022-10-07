@@ -16,7 +16,7 @@ type NumberByFeedId = {
 };
 
 export class RssPostStore {
-  itemsByFeedId: RssPostsByFeedId = {};
+  rssPostsByFeedId: RssPostsByFeedId = {};
   pageByFeedId: NumberByFeedId = {};
   totalByFeedId: NumberByFeedId = {};
   loading = false;
@@ -35,35 +35,35 @@ export class RssPostStore {
       showRead: this.showRead,
     });
     runInAction(() => {
-      this.itemsByFeedId[feedId] = result.list;
+      this.rssPostsByFeedId[feedId] = result.list;
       this.totalByFeedId[feedId] = result.total;
       this.loading = false;
     });
   }
 
   async reload(feedId: number) {
-    this.itemsByFeedId[feedId] = [];
+    this.rssPostsByFeedId[feedId] = [];
     this.load(feedId);
   }
 
-  async hide(item: RssPost, feedId: number) {
-    await api.patch(`/rss/${item.id}/hide`);
+  async hide(rssPost: RssPost, feedId: number) {
+    await api.patch(`/rss/${rssPost.id}/hide`);
     await this.load(feedId);
   }
 
-  async read(item: RssPost) {
-    item.read = !item.read;
-    await api.patch(`/rss/${item.id}/read`);
+  async read(rssPost: RssPost) {
+    rssPost.read = !rssPost.read;
+    await api.patch(`/rss/${rssPost.id}/read`);
   }
 
   async setPage(feedId: number, page: number) {
     this.pageByFeedId[feedId] = page;
-    this.itemsByFeedId[feedId] = [];
+    this.rssPostsByFeedId[feedId] = [];
     await this.reload(feedId);
   }
 
-  getItemsByFeedId(feedId: number) {
-    return this.itemsByFeedId[feedId] || [];
+  getRssPostsByFeedId(feedId: number) {
+    return this.rssPostsByFeedId[feedId] || [];
   }
 
   getPageByFeedId(feedId: number) {
@@ -75,15 +75,10 @@ export class RssPostStore {
     return Math.ceil(total / 10);
   }
 
-  getItem(feedId: number, postId: number) {
-    const items = this.getItemsByFeedId(feedId);
-    const item = items.find((x) => x.id === postId);
-    console.log({
-      feedId,
-      items,
-      item,
-    });
-    return item;
+  getRssPost(feedId: number, postId: number) {
+    const rssPosts = this.getRssPostsByFeedId(feedId);
+    const rssPost = rssPosts.find((x) => x.id === postId);
+    return rssPost;
   }
 }
 

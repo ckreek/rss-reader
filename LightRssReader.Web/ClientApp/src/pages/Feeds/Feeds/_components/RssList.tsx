@@ -10,7 +10,7 @@ interface RssListProps {
 export const RssList = observer(({ feedId }: RssListProps) => {
   const { rssPostStore } = useRootStore();
 
-  const items = feedId !== undefined ? rssPostStore.getItemsByFeedId(feedId) : [];
+  const rssPosts = feedId !== undefined ? rssPostStore.getRssPostsByFeedId(feedId) : [];
 
   const page = feedId !== undefined ? rssPostStore.getPageByFeedId(feedId) : 0;
 
@@ -25,8 +25,8 @@ export const RssList = observer(({ feedId }: RssListProps) => {
   return (
     <>
       <List>
-        {items.map((x) => (
-          <RssPostCardListItem key={x.id} item={x} feedId={feedId} />
+        {rssPosts.map((x) => (
+          <RssPostCardListItem key={x.id} rssPost={x} feedId={feedId} />
         ))}
       </List>
       <Pagination

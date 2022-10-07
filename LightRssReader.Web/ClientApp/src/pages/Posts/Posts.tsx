@@ -14,16 +14,16 @@ export const Posts = observer(() => {
   const params = useParams<keyof PostsRouteParams>();
   const { rssPostStore } = useRootStore();
 
-  const item =
+  const rssPost =
     params.feedId !== undefined && params.postId !== undefined
-      ? rssPostStore.getItem(parseInt(params.feedId), parseInt(params.postId))
+      ? rssPostStore.getRssPost(parseInt(params.feedId), parseInt(params.postId))
       : undefined;
 
   useEffect(() => {
-    if (!item) {
+    if (!rssPost) {
       // load
     }
-  }, [item]);
+  }, [rssPost]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -50,7 +50,7 @@ export const Posts = observer(() => {
               flexDirection: "column",
             }}
           >
-            {item && <RssPostCard item={item} feedId={item.feedId} />}
+            {rssPost && <RssPostCard rssPost={rssPost} feedId={rssPost.feedId} />}
           </Box>
         </Container>
       </Box>

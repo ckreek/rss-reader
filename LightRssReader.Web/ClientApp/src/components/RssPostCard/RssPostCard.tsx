@@ -15,12 +15,12 @@ import { useSnackbar } from "notistack";
 
 interface RssPostCardProps {
   feedId: number;
-  item: RssPost;
+  rssPost: RssPost;
   onGoToNext?: () => {};
 }
 
 export const RssPostCard = observer(
-  ({ item, onGoToNext, feedId }: RssPostCardProps) => {
+  ({ rssPost, onGoToNext, feedId }: RssPostCardProps) => {
     const navigate = useNavigate();
     const { rssPostStore } = useRootStore();
     const ref = useRef<HTMLSpanElement | null>(null);
@@ -29,19 +29,19 @@ export const RssPostCard = observer(
 
     useEffect(() => {
       if (ref.current) {
-        ref.current.innerHTML = item.summary;
+        ref.current.innerHTML = rssPost.summary;
       }
-    }, [item.summary]);
+    }, [rssPost.summary]);
 
     const handleCancelHideClick = async () => {
-      closeSnackbar(item.id);
-      await rssPostStore.hide(item, feedId);
+      closeSnackbar(rssPost.id);
+      await rssPostStore.hide(rssPost, feedId);
     }
 
     const handleHideClick = async () => {
-      await rssPostStore.hide(item, feedId);
+      await rssPostStore.hide(rssPost, feedId);
       enqueueSnackbar("Post hidden", {
-        key: item.id,
+        key: rssPost.id,
         variant: "success",
         action: () => {
           return (
@@ -54,16 +54,16 @@ export const RssPostCard = observer(
     };
 
     const handleReadClick = async () => {
-      await rssPostStore.read(item);
+      await rssPostStore.read(rssPost);
     };
 
     const handleCopyUrlClick = async () => {
-      navigator.clipboard.writeText(item.url);
+      navigator.clipboard.writeText(rssPost.url);
       setCopied(true);
     };
 
     const handleViewClick = async () => {
-      navigate(`/feeds/${feedId}/posts/${item.id}`);
+      navigate(`/feeds/${feedId}/posts/${rssPost.id}`);
     };
 
     const handleGoToNextClick = async () => {
@@ -82,18 +82,18 @@ export const RssPostCard = observer(
 
     return (
       <Card sx={{ width: "100%", position: "relative" }}>
-        <CardContent className={item.read ? styles.read : ""}>
+        <CardContent className={rssPost.read ? styles.read : ""}>
           <Box display="flex" alignItems="center">
             <Typography gutterBottom variant="h5" component="div">
-              {item.title}
+              {rssPost.title}
             </Typography>
             <Typography variant="subtitle2">
               {", "}
-              {formatDate(item.publishDate)}
+              {formatDate(rssPost.publishDate)}
             </Typography>
           </Box>
           <Typography ref={ref} variant="body2">
-            {item.summary}
+            {rssPost.summary}
           </Typography>
         </CardContent>
         <Box

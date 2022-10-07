@@ -40,25 +40,25 @@ public class RssController : ControllerBase
             }
         }
 
-        var items = await _rssPostService.List(filters);
+        var rssPosts = await _rssPostService.List(filters);
         var total = await _rssPostService.Count(filters);
         return Ok(new ListResult<RssPostDto>
         {
             Total = total,
-            List = items.Select(_mapper.Map<RssPostDto>),
+            List = rssPosts.Select(_mapper.Map<RssPostDto>),
         });
     }
 
     [HttpPatch("{id}/hide")]
     public async Task<IActionResult> Hide(long id)
     {
-        var item = await _rssPostService.Get(id);
-        if (item == null)
+        var rssPost = await _rssPostService.Get(id);
+        if (rssPost == null)
         {
             return NotFound();
         }
 
-        await _rssPostService.Hide(item);
+        await _rssPostService.Hide(rssPost);
 
         return Ok();
     }
@@ -66,13 +66,13 @@ public class RssController : ControllerBase
     [HttpPatch("{id}/read")]
     public async Task<IActionResult> Read(long id)
     {
-        var item = await _rssPostService.Get(id);
-        if (item == null)
+        var rssPost = await _rssPostService.Get(id);
+        if (rssPost == null)
         {
             return NotFound();
         }
 
-        await _rssPostService.Read(item);
+        await _rssPostService.Read(rssPost);
 
         return Ok();
     }

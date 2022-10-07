@@ -5,12 +5,12 @@ namespace LightRssReader.BusinessLayer.Services;
 
 public class RssClient
 {
-  public IEnumerable<RssPostModel> GetItems(string url)
+  public IEnumerable<RssPostModel> GetRssPosts(string url)
   {
     using var reader = XmlReader.Create(url);
     var feed = SyndicationFeed.Load(reader);
 
-    var items = feed
+    var posts = feed
         .Items
         .Select(x => new RssPostModel
         {
@@ -20,6 +20,6 @@ public class RssClient
           Title = x.Title.Text,
         });
 
-    return items;
+    return posts;
   }
 }

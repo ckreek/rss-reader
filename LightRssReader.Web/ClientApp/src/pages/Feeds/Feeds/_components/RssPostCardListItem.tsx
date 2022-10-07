@@ -4,12 +4,12 @@ import { useRef } from "react";
 import { RssPost } from "store/RssPost/RssPostStore";
 
 interface RssPostCardListItemProps {
-  item: RssPost;
+  rssPost: RssPost;
   feedId: number;
 }
 
 export const RssPostCardListItem = ({
-  item,
+  rssPost,
   feedId,
 }: RssPostCardListItemProps) => {
   const ref = useRef<HTMLLIElement | null>(null);
@@ -21,7 +21,7 @@ export const RssPostCardListItem = ({
   };
   return (
     <ListItem ref={ref}>
-      <RssPostCard item={item} onGoToNext={handleGoToNext} feedId={feedId} />
+      <RssPostCard rssPost={rssPost} onGoToNext={handleGoToNext} feedId={feedId} />
     </ListItem>
   );
 };

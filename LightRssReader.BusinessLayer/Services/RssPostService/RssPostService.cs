@@ -15,19 +15,19 @@ public class RssPostService : IRssPostService
         _context = context;
     }
 
-    public async Task<int> SaveNewItems(long feedId, IEnumerable<RssPost> items)
+    public async Task<int> SaveNewRssPosts(long feedId, IEnumerable<RssPost> rssPosts)
     {
-        var urls = items.Select(x => x.Url);
+        var urls = rssPosts.Select(x => x.Url);
         var uploadedUrls = await _context.RssPosts.AsNoTracking()
             .Where(x => urls.Contains(x.Url))
             .Select(x => x.Url)
             .ToListAsync();
-        var notUploaded = items.Where(x => !uploadedUrls.Contains(x.Url)).ToList();
+        var notUploaded = rssPosts.Where(x => !uploadedUrls.Contains(x.Url)).ToList();
         if (notUploaded.Count() > 0)
         {
-            foreach (var item in notUploaded)
+            foreach (var rssPost in notUploaded)
             {
-                item.FeedId = feedId;
+                rssPost.FeedId = feedId;
             }
             _context.RssPosts.AddRange(notUploaded);
             await _context.SaveChangesAsync();
@@ -39,42 +39,42 @@ public class RssPostService : IRssPostService
     {
         var pagination = new Pagination(filters.Page);
 
-        var items = await QueryFeedItems(filters)
+        var rssPosts = await QueryRssPosts(filters)
             .AsNoTracking()
             .OrderByDescending(x => x.PublishDate)
             .Skip(pagination.Skip)
             .Take(pagination.Limit)
             .ToListAsync();
 
-        return items;
+        return rssPosts;
     }
 
     public async Task<int> Count(RssPostFilters filters)
     {
-        var items = await QueryFeedItems(filters)
+        var rssPosts = await QueryRssPosts(filters)
             .CountAsync();
-        return items;
+        return rssPosts;
     }
 
     public async Task<RssPost?> Get(long id)
     {
-        var item = await _context.RssPosts.FindAsync(id);
-        return item;
+        var rssPost = await _context.RssPosts.FindAsync(id);
+        return rssPost;
     }
 
-    public async Task Hide(RssPost item)
+    public async Task Hide(RssPost rssPost)
     {
-        item.Hidden = !item.Hidden;
+        rssPost.Hidden = !rssPost.Hidden;
         await _context.SaveChangesAsync();
     }
 
-    public async Task Read(RssPost item)
+    public async Task Read(RssPost rssPost)
     {
-        item.Read = !item.Read;
+        rssPost.Read = !rssPost.Read;
         await _context.SaveChangesAsync();
     }
 
-    private IQueryable<RssPost> QueryFeedItems(RssPostFilters filters)
+    private IQueryable<RssPost> QueryRssPosts(RssPostFilters filters)
     {
         var query = _context.RssPosts
             .Where(x => !x.Hidden)
