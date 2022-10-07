@@ -9,3 +9,10 @@ Services and DB layers: EF Core and SQLite
 
 ## LightRssReader.Background
 Console app to fetch new posts every 3 mins.
+
+## Setup
+dotnet user-secrets set "TelegramOptions:Token" "token"
+
+dotnet user-secrets set "TelegramOptions:ChatId" "chatId"
+
+

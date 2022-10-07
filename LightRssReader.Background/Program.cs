@@ -11,13 +11,16 @@ if (!string.IsNullOrEmpty(environmentName))
 {
     builder.ConfigureAppSettings(environmentName);
 }
-var configuration = builder.Build();
+var configuration = builder
+    .AddUserSecrets<Program>()
+    .Build();
 
 var services = new ServiceCollection();
 
 services.AddScoped<ReadRssJob>();
 services.ConfigureDb(configuration.GetConnectionString("DefaultConnection"));
 services.ConfigureServices();
+services.ConfigureOptions(configuration);
 services.ConfigureMapper();
 
 services.AddLogging(configure => configure

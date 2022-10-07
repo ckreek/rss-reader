@@ -12,13 +12,15 @@ public class ReadRssJob
     private readonly IFeedService _feedService;
     private readonly RssClient _rssClient;
     private readonly ILogger _logger;
+    private readonly ITelegramClient _telegramClient;
 
     public ReadRssJob(
         IMapper mapper,
         IRssPostService rssPostService,
         IFeedService feedService,
         RssClient rssClient,
-        ILoggerFactory loggerFactory
+        ILoggerFactory loggerFactory,
+        ITelegramClient telegramClient
     )
     {
         _mapper = mapper;
@@ -26,6 +28,7 @@ public class ReadRssJob
         _feedService = feedService;
         _rssClient = rssClient;
         _logger = loggerFactory.CreateLogger("Read RSS");
+        _telegramClient = telegramClient;
     }
 
     public async Task Execute()
@@ -38,8 +41,14 @@ public class ReadRssJob
             var mappedItems = newItems.Select(_mapper.Map<RssPost>);
 
             var newItemsCount = await _rssPostService.SaveNewItems(feed.Id, mappedItems);
-            _logger.LogTrace($"{feed.Name} posts found: {newItemsCount}{System.Environment.NewLine}");
             await _feedService.Update(feed);
+
+            var logMessage = $"{feed.Name} posts found: {newItemsCount}{System.Environment.NewLine}";
+            _logger.LogTrace(logMessage);
+
+            if (newItemsCount > 0) {
+                await _telegramClient.SendMessage(logMessage);
+            }
         }
         _logger.LogInformation("---------- Finished ----------");
     }

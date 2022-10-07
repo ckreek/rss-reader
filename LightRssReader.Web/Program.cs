@@ -26,6 +26,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.ConfigureDb(configuration.GetConnectionString("DefaultConnection"));
 builder.Services.ConfigureServices();
+builder.Services.ConfigureOptions(configuration);
 builder.Services.ConfigureMapper();
 
 var app = builder.Build();

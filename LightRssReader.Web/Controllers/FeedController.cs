@@ -13,16 +13,19 @@ public class FeedController : ControllerBase
     private readonly ILogger<FeedController> _logger;
     private readonly IMapper _mapper;
     private readonly IFeedService _feedService;
+    private readonly ITelegramClient _t;
 
     public FeedController(
       ILogger<FeedController> logger,
       IMapper mapper,
-      IFeedService feedService
+      IFeedService feedService,
+      ITelegramClient t
       )
     {
         _logger = logger;
         _mapper = mapper;
         _feedService = feedService;
+        _t = t;
     }
 
     [HttpGet]
