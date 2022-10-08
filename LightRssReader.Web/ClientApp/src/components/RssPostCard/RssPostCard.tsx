@@ -17,10 +17,11 @@ interface RssPostCardProps {
   feedId: number;
   rssPost: RssPost;
   onGoToNext?: () => {};
+  hasControls: boolean;
 }
 
 export const RssPostCard = observer(
-  ({ rssPost, onGoToNext, feedId }: RssPostCardProps) => {
+  ({ rssPost, onGoToNext, feedId, hasControls }: RssPostCardProps) => {
     const navigate = useNavigate();
     const { rssPostStore } = useRootStore();
     const ref = useRef<HTMLSpanElement | null>(null);
@@ -36,7 +37,7 @@ export const RssPostCard = observer(
     const handleCancelHideClick = async () => {
       closeSnackbar(rssPost.id);
       await rssPostStore.hide(rssPost, feedId);
-    }
+    };
 
     const handleHideClick = async () => {
       await rssPostStore.hide(rssPost, feedId);
@@ -45,7 +46,11 @@ export const RssPostCard = observer(
         variant: "success",
         action: () => {
           return (
-            <Button color="inherit" size="small" onClick={handleCancelHideClick}>
+            <Button
+              color="inherit"
+              size="small"
+              onClick={handleCancelHideClick}
+            >
               Cancel
             </Button>
           );
@@ -96,95 +101,97 @@ export const RssPostCard = observer(
             {rssPost.summary}
           </Typography>
         </CardContent>
-        <Box
-          className={styles.overlayWrapper}
-          top={0}
-          right={0}
-          position="absolute"
-          height="100%"
-          width="33.3%"
-        >
+        {hasControls && (
           <Box
-            className={styles.overlayContainer}
+            className={styles.overlayWrapper}
             top={0}
             right={0}
             position="absolute"
             height="100%"
-            width="100%"
+            width="33.3%"
           >
             <Box
-              className={styles.overlay}
+              className={styles.overlayContainer}
               top={0}
               right={0}
               position="absolute"
               height="100%"
               width="100%"
-            />
-            <Box
-              className={styles.buttonContainer}
-              top={0}
-              right={0}
-              position="absolute"
-              height="100%"
-              width="100%"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              flexDirection="column"
             >
-              <Button
-                variant="contained"
-                color="primary"
-                className={styles.button}
-                onClick={handleViewClick}
+              <Box
+                className={styles.overlay}
+                top={0}
+                right={0}
+                position="absolute"
+                height="100%"
+                width="100%"
+              />
+              <Box
+                className={styles.buttonContainer}
+                top={0}
+                right={0}
+                position="absolute"
+                height="100%"
+                width="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column"
               >
-                View
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className={styles.button}
-                onClick={handleReadClick}
-              >
-                Read
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className={styles.button}
-                onClick={handleHideClick}
-              >
-                Hide
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className={styles.button}
-                onClick={handleCopyUrlClick}
-              >
-                Copy URL&nbsp;
-                <ContentCopyIcon
-                  sx={{
-                    display: !copied ? "block" : "none",
-                  }}
-                />
-                <CheckIcon
-                  sx={{
-                    display: copied ? "block" : "none",
-                  }}
-                />
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className={styles.button}
-                onClick={handleGoToNextClick}
-              >
-                Go to next
-              </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={styles.button}
+                  onClick={handleViewClick}
+                >
+                  View
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={styles.button}
+                  onClick={handleReadClick}
+                >
+                  Read
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={styles.button}
+                  onClick={handleHideClick}
+                >
+                  Hide
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={styles.button}
+                  onClick={handleCopyUrlClick}
+                >
+                  Copy URL&nbsp;
+                  <ContentCopyIcon
+                    sx={{
+                      display: !copied ? "block" : "none",
+                    }}
+                  />
+                  <CheckIcon
+                    sx={{
+                      display: copied ? "block" : "none",
+                    }}
+                  />
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={styles.button}
+                  onClick={handleGoToNextClick}
+                >
+                  Go to next
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        )}
       </Card>
     );
   }

@@ -16,7 +16,10 @@ export const Posts = observer(() => {
 
   const rssPost =
     params.feedId !== undefined && params.postId !== undefined
-      ? rssPostStore.getRssPost(parseInt(params.feedId), parseInt(params.postId))
+      ? rssPostStore.getRssPost(
+          parseInt(params.feedId),
+          parseInt(params.postId)
+        )
       : undefined;
 
   useEffect(() => {
@@ -50,7 +53,13 @@ export const Posts = observer(() => {
               flexDirection: "column",
             }}
           >
-            {rssPost && <RssPostCard rssPost={rssPost} feedId={rssPost.feedId} />}
+            {rssPost && (
+              <RssPostCard
+                rssPost={rssPost}
+                feedId={rssPost.feedId}
+                hasControls={false}
+              />
+            )}
           </Box>
         </Container>
       </Box>

@@ -17,13 +17,18 @@ export const RssPostCardListItem = ({
   const handleGoToNext = async () => {
     if (ref.current) {
       ref.current.nextElementSibling?.scrollIntoView({
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   };
   return (
     <ListItem ref={ref}>
-      <RssPostCard rssPost={rssPost} onGoToNext={handleGoToNext} feedId={feedId} />
+      <RssPostCard
+        rssPost={rssPost}
+        onGoToNext={handleGoToNext}
+        feedId={feedId}
+        hasControls
+      />
     </ListItem>
   );
 };
