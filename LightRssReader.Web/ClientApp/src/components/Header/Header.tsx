@@ -52,6 +52,9 @@ export const Header = observer(
             {title}
           </Typography>
           {children}
+          <Typography variant="h5"  sx={{ flexGrow: 1, textAlign: 'right' }}>
+            Light RSS Reader
+          </Typography>
         </Toolbar>
       </AppBar>
     );
