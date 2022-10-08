@@ -16,7 +16,9 @@ export const RssPostCardListItem = ({
 
   const handleGoToNext = async () => {
     if (ref.current) {
-      ref.current.nextElementSibling?.scrollIntoView();
+      ref.current.nextElementSibling?.scrollIntoView({
+        behavior: 'smooth',
+      });
     }
   };
   return (
