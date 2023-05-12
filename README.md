@@ -8,7 +8,7 @@ ASP.NET Core API + SPA with React.JS and MobX
 Services and DB layers: EF Core and SQLite
 
 ## LightRssReader.Background
-Console app to fetch new posts every 3 mins.
+Console app to fetch new posts every 3 mins and send notifications to Telegram
 
 ## Setup
 dotnet user-secrets set "TelegramOptions:Token" "token"
